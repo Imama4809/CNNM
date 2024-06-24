@@ -1,0 +1,96 @@
+extends layout
+
+block content
+  h2 projectid
+  form(method='POST', onsubmit='return validateForm()')
+    input(type='hidden', name='_method', value='PUT') 
+    .row
+      .col-md-4
+        .card
+          .card-body
+            .general-container
+              h2 General Info
+              .mb-3
+                label.form-label(for='project_name') Project Name
+                input.form-control(type='text', id='name', name='name')
+              .mb-3
+                label.form-label(for='dataset') Dataset
+                input.form-control(type='text', id='dataset', name='dataset')
+              .mb-3
+      .col-md-4
+        .card
+          .card-body
+            .loading-container(id = 'loading_info')
+              h2 Loading Info
+              .mb-3
+                label.form-label(for='batch_size') batch_size
+                input.form-control(type ='Number', id='loading_batch_size', name='loading_batch_size')
+              .mb-3
+                label.form-label(for='random_seed') random_seed
+                input.form-control(type ='Number', id='random_seed', name='random_seed')
+              .mb-3
+                label.form-label(for='valid_size') valid_size
+                input.form-control(type ='Number', id='valid_size', name='valid_size')
+              .mb-3
+                input.form-check-input(type='checkbox', id='augment', name='augment')
+                label.form-check-label(for='augment') Augment
+              .mb-3
+                input.form-check-input(type='checkbox', id='shuffle', name='shuffle')
+                label.form-check-label(for='shuffle') Shuffle
+      .col-md-4
+        .card
+          .card-body           
+            .training-container(id = 'training_info')
+              h2 Training Info
+              .mb-3
+                label.form-label(for='epoch') Epoch
+                input.form-control(type='text', id='epoch', name='epoch')
+              .mb-3
+                label.form-label(for='optimizer') Optimizer
+                input.form-control(type='text', id='optimizer', name='optimizer')
+              .mb-3
+                label.form-label(for='criterion') Criterion
+                input.form-control(type='text', id='criterion', name='criterion')
+              .mb-3
+                label.form-label(for='batch_size') Batch Size
+                input.form-control(type='number', id='training_batch_size', name='training_batch_size')
+              .mb-3
+                label.form-label(for='learning_rate') Learning Rate
+                input.form-control(type='number', id='learning_rate', name='learning_rate')
+              .mb-3
+                label.form-label(for='weight_decay') Weight Decay
+                input.form-control(type='number', id='weight_decay', name='weight_decay')
+              .mb-3
+                label.form-label(for='momentum') Momentum
+                input.form-control(type='number', id='momentum', name='momentum')
+    button.btn.btn-primary(style='width:150px', type='submit') Submit
+  form(method='POST', onsubmit='return confirm("Are you sure you want to delete this layer?")')
+    input(type='hidden', name='_method', value='DELETE') 
+    button.btn.btn-primary(style='width:150px', type='submit') Delete
+
+
+append scripts
+  script.
+    function validateForm() {
+      // Validate general container inputs
+      const project_name = document.getElementById('name').value;
+      if (!project_name) {
+        alert('Please fill out all general information fields.');
+        return false;
+      }
+      const loading_info = document.querySelectorAll('#loading_info input')
+      for (let input of loading_info) {
+        if (!input.value) {
+          alert('Please fill out all information fields')
+          return false
+        }
+      }
+      const training_info = document.querySelectorAll('#training_info input')
+      for (let input of training_info) {
+        if (!input.value) {
+          alert('Please fill out all information fields')
+          return false
+        }
+      }
+      return true;  // All fields are filled
+    }

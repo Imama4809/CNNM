@@ -1,0 +1,160 @@
+extends layout
+
+block content
+  h2 #{layer.name}
+  .row
+    .col-md-12
+      .card(style='length:500px')
+        .card-body
+          form(method='POST', onsubmit='return validateForm()')
+            input(type='hidden', name='_method', value='PUT') 
+            // Checkboxes container with flexbox
+            .checkbox-container(style='display:flex;flex-wrap:wrap')
+              each layer in ['Convoluational Layer', 'Linear Layer', 'Pooling layer', 'Activation Function','Batch Norm' ,'Dropout']
+                .form-check.form-check-inline
+                  input.form-check-input(type='checkbox', id=`${layer}`, name='sub_layer',value = `${layer}`, onchange='handleCheckboxChange(this)')
+                  label.form-check-label(for=`${layer}`) #{layer}
+            .general-container(style='width:50%;display: inline-block')
+              h2 General Info
+              // Add general form fields here
+              .mb-3
+                label.form-label(for='name') Layer Name
+                input.form-control(type='text', id='name', name='name',value = `${layer.name}`)
+              .mb-3
+                label.form-label(for='order') Layer Order 
+                input.form-control(type='number', id='order', name='order',value = `${layer.order}`)
+            .specific-container(id='specific-container', style='length:400px;width:50%;display: inline-block;float:right')
+              // Initial empty content for specific container
+
+            button.btn.btn-primary(type='submit') Submit
+          form(method='POST', onsubmit='return confirm("Are you sure you want to delete this layer?")')
+            input(type='hidden', name='_method', value='DELETE') 
+            button.btn.btn-primary(type='submit') Delete
+
+
+append scripts
+  script.
+    function handleCheckboxChange(checkbox) {
+      const checkboxes = document.getElementsByName('sub_layer');
+      checkboxes.forEach(cb => {
+        if (cb !== checkbox) cb.checked = false;
+      });
+
+      // Call function to update the specific container based on the selected checkbox
+      updateSpecificContainer(checkbox);
+    }
+
+    function updateSpecificContainer(checkbox) {
+      const container = document.getElementById('specific-container');
+      container.innerHTML = '';  // Clear the container
+
+      // Update the content based on the selected checkbox
+      if (checkbox.checked) {
+        switch (checkbox.id) {
+          case 'Convoluational Layer':
+            container.innerHTML = `
+              <div class="mb-3">
+                <label for="input_depth" class="form-label">Input Depth</label>
+                <input type="Number" class="form-control" id="input_depth" name="input_depth">
+              </div>
+              <div class="mb-3">
+                <label for="output_depth" class="form-label">Output Depth</label>
+                <input type="Number" class="form-control" id="onput_depth" name="output_depth">
+              </div>
+              <div class="mb-3">
+                <label for="kernal_size" class="form-label">Kernal Size</label>
+                <input type="Number" class="form-control" id="kernal_size" name="kernal_size">
+              </div>
+              <div class="mb-3">
+                <label for="stride" class="form-label">Stride</label>
+                <input type="Number" class="form-control" id="stride" name="stride">
+              </div>
+              <div class="mb-3">
+                <label for="padding" class="form-label">Padding</label>
+                <input type="Number" class="form-control" id="padding" name="padding">
+              </div>
+            `;
+            break;
+          case 'Linear Layer':
+            container.innerHTML = `
+              <div class="mb-3">
+                <label for="input_depth" class="form-label">Input Depth</label>
+                <input type="Number" class="form-control" id="input_depth" name="input_depth">
+              </div>
+              <div class="mb-3">
+                <label for="neurons" class="form-label">Neurons</label>
+                <input type="Number" class="form-control" id="neurons" name="neurons">
+              </div>
+            `;
+            break;
+          case 'Pooling layer':
+            container.innerHTML = `
+              <div class="mb-3">
+                <label for="kernal_size" class="form-label">Kernal Size</label>
+                <input type="Number" class="form-control" id="kernal_size" name="kernal_size">
+              </div>
+              <div class="mb-3">
+                <label for="padding" class="form-label">Padding</label>
+                <input type="Number" class="form-control" id="padding" name="padding">
+              </div>
+            `;
+            break;
+          case 'Activation Function':
+            container.innerHTML = `
+              <div class="mb-3">
+                <label for="activation_function" class="form-label">Activation Function</label>
+                <input type="text" class="form-control" id="activation_function" name="activation_function">
+              </div>
+            `;
+            break;
+          case 'Batch Norm':
+            container.innerHTML = `
+              <div class="mb-3">
+                <label for="batch_norm" class="form-label">Batch Norm</label>
+                <input type="Number" class="form-control" id="batch_norm" name="batch_norm">
+              </div>
+            `;
+            break;
+          case 'Dropout':
+            container.innerHTML = `
+              <div class="mb-3">
+                <label for="dropout" class="form-label">Dropout</label>
+                <input type="Number" class="form-control" id="dropout" name="dropout">
+              </div>
+            `;
+            break;
+          // Add more cases for checkboxes 3 to 7
+        }
+      }
+    }
+
+    function validateForm() {
+      // Validate general container inputs
+      const layername = document.getElementById('layername').value;
+      const order = document.getElementById('order').value;
+
+      if (!layername || !order) {
+        alert('Please fill out all general information fields.');
+        return false;
+      }
+
+      // Validate specific container inputs
+      const specificInputs = document.querySelectorAll('#specific-container input');
+      for (let input of specificInputs) {
+        if (!input.value) {
+          alert('Please fill out all specific information fields.');
+          return false;
+        }
+      }
+
+      // Check if at least one checkbox is selected
+      const checkboxes = document.getElementsByName('sub_layer');
+      const isChecked = Array.from(checkboxes).some(cb => cb.checked);
+
+      if (!isChecked) {
+        alert('Please select at least one checkbox.');
+        return false;
+      }
+
+      return true;  // All fields are filled
+    }

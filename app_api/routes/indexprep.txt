@@ -1,0 +1,24 @@
+what parts of the website will I need and what requsts will i need for them
+
+GET
+PULL
+POST
+DELETE 
+
+
+/projects
+    POST addproject
+    DELETE deleteproject
+
+
+/projects/:projectid
+    GET  viewproject
+    PUT updateproject 
+    POST createlayer
+    DELETE deletelayer
+/projects/:projectid/:layerid
+    GET viewlayer
+    PUT updatelayer
+    2 seperate files, one for layers and one for projects
+
+

@@ -1,0 +1,89 @@
+extends layout
+
+block content
+  h2 #{project.name}
+  h5 Press the arrow keys to move through the layers
+  .owl-carousel(style='width: 800px; height: 400px; margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);')
+    each item, index in max_order_list
+      .item
+        .row
+          .col-md-12
+            .card
+              .card-body
+                .dropdown(style='float:left')
+                  button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdownMenuButton${index}`, data-bs-toggle='dropdown', aria-expanded='false')
+                    | layer #{item}
+                  ul.dropdown-menu(aria-labelledby=`dropdownMenuButton${index}`, style='max-height: 300%; overflow-y: scroll;')
+                    each layer in layers
+                      if layer.order == item
+                        li
+                          a.dropdown-item(href='#', data-order=item, data-layer=JSON.stringify(layer), onclick='handleClick(this)') #{layer.name}
+                if layerlist[item - 1]
+                  h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') #{layerlist[item - 1].name}
+                else
+                  h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') sorry
+                p.card-text Some text for card 
+                p.card-text(style='float:left')
+                  | hey 
+                  br
+                  | bro
+                  br
+                  | another line
+                p.card-text(style='float:right') nice
+
+  .card.right-align
+    .card-body 
+      h5 Data Loading Settings
+      
+  
+  .card.right-align
+    .card-body 
+      h5 Data Training Settings
+      p More text for the new card
+
+append scripts
+  script.
+    var layerlist = !{JSON.stringify(layerlist)};
+
+    const find_layer_via_name = (layername) => {
+      for (const layer of layers) {
+        if (layer.name === layername) {
+          return layer;
+        }
+      }
+    };
+
+    const update = (order, layer) => {
+      layerlist[order - 1] = layer;
+      // Update the card title dynamically
+      const cardTitle = document.querySelector(`#card-title-${order}`);
+      if (cardTitle) { 
+        cardTitle.textContent = layer.name;
+      }
+      // Update the active class in the dropdown
+      const dropdownMenu = document.querySelector(`#dropdownMenuButton${order - 1}`).nextElementSibling;
+      dropdownMenu.querySelectorAll('li').forEach(li => {
+        li.classList.remove('active');
+      });
+      dropdownMenu.querySelector(`a[data-order="${order}"][data-layer='${JSON.stringify(layer)}']`).parentElement.classList.add('active');
+    };
+
+    const handleClick = (element) => {
+      const order = element.getAttribute('data-order');
+      const layer = JSON.parse(element.getAttribute('data-layer'));
+      update(order, layer);
+    };
+
+    // Optional: function to initialize the card titles, if needed
+    const initializeCardTitles = () => {
+      layerlist.forEach((layer, index) => {
+        if (layer) {
+          const cardTitle = document.querySelector(`#card-title-${index + 1}`);
+          if (cardTitle) {
+            cardTitle.textContent = layer.name;
+          }
+        }
+      });
+    };
+
+    document.addEventListener('DOMContentLoaded', initializeCardTitles);

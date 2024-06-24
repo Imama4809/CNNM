@@ -1,0 +1,86 @@
+/* Global button styles */
+.btn {
+  background-color: #5f5f5f; /* Green */
+  border: none;
+  color: #000;
+  padding: 40px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 20px;
+  margin-bottom: 5rem;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* Secondary button styles */
+.btn2 {
+  background-color: #fff;
+  color: #5d5d5d;
+  border: none;
+}
+
+/* Custom button styles */
+.btn3 {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn3 i.fas.fa-ellipsis-v {
+  background-color: #fff;
+  margin: 0;
+}
+
+
+
+/* Card alignment */
+.card.right-align {
+  margin-left: auto;
+  width: fit-content;
+}
+
+/* Dropdown menu style */
+.dropdown-menu {
+  max-height: 200px; /* Adjust as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Hide default dropdown arrow */
+.dropdown-toggle::after {
+  display: none;
+}
+
+/* Owl carousel item styles */
+.owl-carousel .item {
+  text-align: center;
+  padding: 15px;
+}
+
+.owl-carousel .item img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.owl-carousel .item h5 {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.owl-carousel .item p {
+  font-size: 14px;
+  color: #777;
+}
+
+/* Total background color */
+.total-background {
+  background-color: #222222;
+}
+
+/* White text color */
+.white-text {
+  color: #d0d0d0;
+}
