@@ -12,14 +12,18 @@ block content
               .card-body
                 .dropdown(style='float:left')
                   button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdownMenuButton${index}`, data-bs-toggle='dropdown', aria-expanded='false')
-                    | layer #{item}
+                    | Choose layer #{item}
                   ul.dropdown-menu(aria-labelledby=`dropdownMenuButton${index}`, style='max-height: 300%; overflow-y: scroll;')
                     each layer in layers
                       if layer.order == item
                         li
                           a.dropdown-item(href='#', data-order=item, data-layer=JSON.stringify(layer), onclick='handleClick(this)') #{layer.name}
                 h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') sorry
-                p.card-text(id=`card-text-${index + 1}`) Note: The Edit Layer button will not work until you select a layer
+                p.card-text(id=`card-text-${index + 1}`) 
+                  br
+                  | Note: The Edit Layer button will not work until you select a layer
+                  br
+                  | Note: The 
                 p.card-text(style='float:left')
                   | hey 
                   br

@@ -44,7 +44,6 @@ const add_project = async (req,res) => {
     } catch (err) {
         console.error('Error handling form submission:', err.response.body);
     }
-    res.redirect(`/${userid}/projects`)
 }
 
 const specific_project = async (req, res) => {
