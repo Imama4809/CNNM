@@ -78,8 +78,8 @@ const layers_schema = new mongoose.Schema({
     lin_layer: lin_layer_schema,
     pool_layer: max_pool_schema,
     activation_function: String,
-    Batch_norm: Number,
-    Dropout: Number
+    batch_norm: Number,
+    dropout: Number
 
 })
 

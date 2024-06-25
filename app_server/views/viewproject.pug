@@ -19,23 +19,20 @@ block content
                         li
                           a.dropdown-item(href='#', data-order=item, data-layer=JSON.stringify(layer), onclick='handleClick(this)') #{layer.name}
                 h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') sorry
-                p.card-text(id=`card-text-${index + 1}`) 
+                p.card-text(id=`card-text-main-${index + 1}`) 
                   br
                   | Note: The Edit Layer button will not work until you select a layer
-                  br
-                  | Note: The 
-                p.card-text(style='float:left')
-                  | hey 
-                  br
-                  | bro
-                  br
-                  | another line
-                p.card-text(style='float:right') nice
-                a.btn3.btn-primary.mb-2(style='width:30%', id=`navigate-button-${index+1}`, href='#') Edit Layer
+                p.card-text(id=`card-text1-${index + 1}`,style='float:left') 
+                br
+                br
+                br
+                br
+                a.btn3.btn-primary.mb-2(style='width:30%;float:Right', id=`navigate-button-${index+1}`, href='#') Edit Layer
 
   .card.right-align
     .card-body 
       h5 Data Loading Settings
+      p hi
 
   .card.right-align
     .card-body 
@@ -61,17 +58,41 @@ append scripts
     const update = (order, layer) => {
       layerlist[order - 1] = layer;
       // Update the card title dynamically
-      const cardTitle = document.querySelector(`#card-title-${order}`);
-      const cardText = document.querySelector(`#card-text-${order}`);
+      const card_title_1 = document.querySelector(`#card-title-${order}`);
+      const card_text_main = document.querySelector(`#card-text-main-${order}`);
+      const card_text_1 = document.querySelector(`#card-text1-${order}`)
+
+      if (card_title_1) { 
+        card_title_1.textContent = layer.name;
+      }
+      if (card_text_main) {
+        card_text_main.textContent = layer.sub_layer;
+      }
+      switch (layer.sub_layer) {
+        case ('Convolutional Layer'):
+          card_text_1.innerHTML = `<div style="text-align: left;">Input Depth: ${layer.conv_layer.input_depth}<br>Output Depth: ${layer.conv_layer.output_depth}<br>Kernal Size: ${layer.conv_layer.kernal_size}<br>Stride: ${layer.conv_layer.stride}<br>Padding: ${layer.conv_layer.padding}</div>`
+          break;
+        case ('Linear Layer'):
+          card_text_1.innerHTML = `<div style="text-align: left;">Input Depth: ${layer.lin_layer.input_depth}<br>Number Of Neurons: ${layer.lin_layer.neurons}</div>`
+          break;
+        case ('Pooling Layer'):
+          card_text_1.innerHTML = `<div style="text-align: left;">Kernal Size: ${layer.pool_layer.pooling_kernal_size}<br>Number Of Neurons: ${layer.pool_layer.pooling_padding}</div>`
+          break;
+        case ('Activation Function'):
+          card_text_1.innerHTML = `<div style="text-align: left;">Kernal Size: ${layer.activation_function}</div>`
+          break;
+        case ('Batch Norm'):
+          card_text_1.innerHTML = `<div style="text-align: left;">Kernal Size: ${layer.batch_norm}</div>`
+          break;
+        case ('Dropout'):
+          card_text_1.innerHTML = `<div style="text-align: left;">Kernal Size: ${layer.dropout}</div>`
+          break;
+      }
+
       const navigateButton = document.querySelector(`#navigate-button-${order}`);
       var link = document.getElementById(`navigate-button-${order}`)
       link.href = basescript +`/${layer._id}`
-      if (cardTitle) { 
-        cardTitle.textContent = layer.name;
-      }
-      if (cardText) {
-        cardText.textContent = layer.sub_layer;
-      }
+
       // Update the active class in the dropdown
       const dropdownMenu = document.querySelector(`#dropdownMenuButton${order - 1}`).nextElementSibling;
       dropdownMenu.querySelectorAll('li').forEach(li => {
