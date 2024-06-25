@@ -18,11 +18,8 @@ block content
                       if layer.order == item
                         li
                           a.dropdown-item(href='#', data-order=item, data-layer=JSON.stringify(layer), onclick='handleClick(this)') #{layer.name}
-                if layerlist[item - 1]
-                  h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') #{layerlist[item - 1].name}
-                else
-                  h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') sorry
-                p.card-text Some text for card 
+                h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') sorry
+                p.card-text(id=`card-text-${index + 1}`) Note: The Edit Layer button will not work until you select a layer
                 p.card-text(style='float:left')
                   | hey 
                   br
@@ -30,12 +27,12 @@ block content
                   br
                   | another line
                 p.card-text(style='float:right') nice
+                a.btn3.btn-primary.mb-2(style='width:30%', id=`navigate-button-${index+1}`, href='#') Edit Layer
 
   .card.right-align
     .card-body 
       h5 Data Loading Settings
-      
-  
+
   .card.right-align
     .card-body 
       h5 Data Training Settings
@@ -44,6 +41,10 @@ block content
 append scripts
   script.
     var layerlist = !{JSON.stringify(layerlist)};
+    var ids = !{JSON.stringify(ids)}
+    var userid = ids[0] 
+    var projectid = ids[1]
+    var basescript = `/${userid}/projects/${projectid}`
 
     const find_layer_via_name = (layername) => {
       for (const layer of layers) {
@@ -57,8 +58,15 @@ append scripts
       layerlist[order - 1] = layer;
       // Update the card title dynamically
       const cardTitle = document.querySelector(`#card-title-${order}`);
+      const cardText = document.querySelector(`#card-text-${order}`);
+      const navigateButton = document.querySelector(`#navigate-button-${order}`);
+      var link = document.getElementById(`navigate-button-${order}`)
+      link.href = basescript +`/${layer._id}`
       if (cardTitle) { 
         cardTitle.textContent = layer.name;
+      }
+      if (cardText) {
+        cardText.textContent = layer.sub_layer;
       }
       // Update the active class in the dropdown
       const dropdownMenu = document.querySelector(`#dropdownMenuButton${order - 1}`).nextElementSibling;
@@ -73,17 +81,3 @@ append scripts
       const layer = JSON.parse(element.getAttribute('data-layer'));
       update(order, layer);
     };
-
-    // Optional: function to initialize the card titles, if needed
-    const initializeCardTitles = () => {
-      layerlist.forEach((layer, index) => {
-        if (layer) {
-          const cardTitle = document.querySelector(`#card-title-${index + 1}`);
-          if (cardTitle) {
-            cardTitle.textContent = layer.name;
-          }
-        }
-      });
-    };
-
-    document.addEventListener('DOMContentLoaded', initializeCardTitles);

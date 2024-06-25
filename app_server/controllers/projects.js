@@ -1,4 +1,4 @@
-    var express = require('express');
+var express = require('express');
 const { ObjectId } = require('mongodb');
 var router = express.Router();
 
@@ -70,6 +70,8 @@ const specific_project = async (req, res) => {
         var layerlist = []
         layerlist[max_order] = 'lmao'
         res.render('viewproject', {
+            projectid: req.params.projectid,
+            ids: [req.params.userid, req.params.projectid],
             project: project,
             max_order_list: max_order_list,
             max_order: max_order,
