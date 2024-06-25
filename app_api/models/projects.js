@@ -30,6 +30,7 @@ const max_pool_schema = new mongoose.Schema({
 
     pooling_kernal_size: Number,
     pooling_padding: Number,
+    pooling_stride: Number,
     //data related to pooling
     prev_connection: String
     //for knowing which order to put stuff in 

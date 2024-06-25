@@ -76,16 +76,16 @@ append scripts
           card_text_1.innerHTML = `<div style="text-align: left;">Input Depth: ${layer.lin_layer.input_depth}<br>Number Of Neurons: ${layer.lin_layer.neurons}</div>`
           break;
         case ('Pooling Layer'):
-          card_text_1.innerHTML = `<div style="text-align: left;">Kernal Size: ${layer.pool_layer.pooling_kernal_size}<br>Number Of Neurons: ${layer.pool_layer.pooling_padding}</div>`
+          card_text_1.innerHTML = `<div style="text-align: left;">Kernal Size: ${layer.pool_layer.pooling_kernal_size}<br>Stride: ${layer.pool_layer.pooling_stride}<br>Padding: ${layer.pool_layer.pooling_padding}</div>`
           break;
         case ('Activation Function'):
-          card_text_1.innerHTML = `<div style="text-align: left;">Kernal Size: ${layer.activation_function}</div>`
+          card_text_1.innerHTML = `<div style="text-align: left;">Activation Function: ${layer.activation_function}</div>`
           break;
         case ('Batch Norm'):
-          card_text_1.innerHTML = `<div style="text-align: left;">Kernal Size: ${layer.batch_norm}</div>`
+          card_text_1.innerHTML = `<div style="text-align: left;">Batch Norm: ${layer.batch_norm}</div>`
           break;
         case ('Dropout'):
-          card_text_1.innerHTML = `<div style="text-align: left;">Kernal Size: ${layer.dropout}</div>`
+          card_text_1.innerHTML = `<div style="text-align: left;">Dropout: ${layer.dropout}</div>`
           break;
       }
 

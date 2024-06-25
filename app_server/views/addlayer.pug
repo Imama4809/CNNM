@@ -9,7 +9,7 @@ block content
           .card-body
             // Checkboxes container with flexbox
             .checkbox-container(style='display:flex;flex-wrap:wrap')
-              each layer in ['Convolutional Layer', 'Linear Layer', 'Pooling layer', 'Activation Function','Batch Norm' ,'Dropout']
+              each layer in ['Convolutional Layer', 'Linear Layer', 'Pooling Layer', 'Activation Function','Batch Norm' ,'Dropout']
                 .form-check.form-check-inline
                   input.form-check-input(type='checkbox', id=`${layer}`, name='sub_layer',value = `${layer}`, onchange='handleCheckboxChange(this)')
                   label.form-check-label(for=`${layer}`) #{layer}
@@ -30,7 +30,7 @@ block content
 append scripts
   script.
     function handleCheckboxChange(checkbox) {
-      const checkboxes = document.getElementsByName('checkboxGroup');
+      const checkboxes = document.getElementsByName('sub_layer');
       checkboxes.forEach(cb => {
         if (cb !== checkbox) cb.checked = false;
       });
@@ -82,15 +82,19 @@ append scripts
               </div>
             `;
             break;
-          case 'Pooling layer':
+          case 'Pooling Layer':
             container.innerHTML = `
               <div class="mb-3">
-                <label for="kernal_size" class="form-label">Kernal Size</label>
-                <input type="Number" class="form-control" id="kernal_size" name="kernal_size">
+                <label for="pooling_kernal_size" class="form-label">Kernal Size</label>
+                <input type="Number" class="form-control" id="pooling_kernal_size" name="pooling_kernal_size">
               </div>
               <div class="mb-3">
-                <label for="padding" class="form-label">Padding</label>
-                <input type="Number" class="form-control" id="padding" name="padding">
+                <label for="pooling_padding" class="form-label">Padding</label>
+                <input type="Number" class="form-control" id="pooling_padding" name="pooling_padding">
+              </div>
+              <div class="mb-3">
+                <label for="pooling_stride" class="form-label">Stride</label>
+                <input type="Number" class="form-control" id="pooling_stride" name="pooling_stride">
               </div>
             `;
             break;

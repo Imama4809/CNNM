@@ -119,6 +119,7 @@ const which_type_of_layer = (req,res) => {
         sub_layer_to_add = {
             pooling_kernal_size: req.body.pooling_kernal_size,
             pooling_padding: req.body.pooling_padding,
+            pooling_stride: req.body.pooling_stride
         }
         layer_to_add = {
             name: req.body.name,
