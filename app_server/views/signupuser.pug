@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    body
+        .container
+            .row.justify-content-center
+                .col-md-4
+                    .card
+                        h2.text-center Sign up
+                        form(action='/login' method='POST')
+                            .form-group.mx-3
+                                label(for='username') Username
+                                input#username.form-control(type='text' name='username' required)
+                            .form-group.mx-3
+                                label(for='email') Email 
+                                input#email.form-control(type='text' name='email' required)
+                            .form-group.mx-3
+                                label(for='password') Password
+                                input#password.form-control(type='password' name='password' required)
+                            .form-group.mx-3
+                                label(for='retyped_password') Please Retype Your Password
+                                input#password.form-control(type='retyped_password' name='retyped_password' required)
+                            .d-flex.justify-content-center
+                                button.btn_signup_login.btn-primary.btn-block(style='margin-top:auto;', type='submit') Submit
