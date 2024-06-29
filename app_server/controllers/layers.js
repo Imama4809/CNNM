@@ -16,7 +16,7 @@ const add_layer = async (req, res) => {
       console.log('success', response.body)
       res.redirect(`/${userid}/projects/${projectid}`);
     } catch (error) {
-      console.error('Error handling form submission:', error.response.body);
+      res.render('error')
     }
   };
 
@@ -34,7 +34,7 @@ const specific_layer = async (req,res) => {
         layer:layer
       })
     } catch (err) {
-      return res.status(500).json(err)
+      res.render('error')
     }
 }
 
@@ -52,6 +52,7 @@ const update_layer = async (req, res) => {
       res.redirect(`/${userid}/projects/${projectid}`)
     } catch (error) {
       console.log('error',error.response)
+      res.render('error')
       return res.status(400).json(error.response)
     }
   }
@@ -62,6 +63,7 @@ const update_layer = async (req, res) => {
       res.redirect(`/${userid}/projects/${projectid}`)
     } catch (error) {
       console.log('error',error.response)
+      res.render('error')
       return res.status(400).json(error.response)
     }
   }
@@ -73,6 +75,13 @@ const update_layer = async (req, res) => {
 
 const view_add_layer_page = async (req,res) => {
     url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' + req.params.projectid
+    try {
+      const {default: got} = await import('got')
+      const response = await got(url)
+    } catch {
+      res.render('error')
+    }
+
     res.render('addlayer',
         {userid: req.params.userid}
       );

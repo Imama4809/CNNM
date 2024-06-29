@@ -3,20 +3,33 @@ const { ObjectId } = require('mongodb');
 var router = express.Router();
 
 const Projects = async (req,res) => {
-    url = 'http://localhost:3000/api/' + req.params.userid + '/projects'
-    const params = {}
-    const {default : got} = await import('got')
-    const response = await got(url,params)
-    const projects = JSON.parse(response.body)
+    try {
+        url = 'http://localhost:3000/api/' + req.params.userid + '/projects'
+        const params = {}
+        const {default : got} = await import('got')
+        const response = await got(url,params)
+        const projects = JSON.parse(response.body)
+        console.log(response.body)
 
-    res.render('viewprojects',{
-        userid: req.params.userid,
-        projects: projects});
+        res.render('viewprojects',{
+            userid: req.params.userid,
+            projects: projects});
+    } catch (err) {
+        res.render('error')
+    }
 };
 
 
 const view_add_project_page = async (req,res) => {
-    res.render('addproject')
+    url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' 
+    try {
+      const {default: got} = await import('got')
+      const response = await got(url)
+      res.render('addproject')
+    } catch (error) {
+      res.render('error')
+    //   return res.status(400).json(error)
+    }
 }
 
 const add_project = async (req,res) => {
@@ -42,7 +55,7 @@ const add_project = async (req,res) => {
         console.log('success', response.body)
         res.redirect(`/${userid}/projects`)
     } catch (err) {
-        console.error('Error handling form submission:', err.response.body);
+        res.render('error')
     }
 }
 
@@ -79,6 +92,7 @@ const specific_project = async (req, res) => {
             first_layers: first_layers
         });
     } catch (error) {
+        res.render('error')
         res.status(500).send('Error fetching project details');
     }
 }
@@ -115,6 +129,7 @@ const update_project = async (req,res) => {
         })
         res.redirect(`/${req.params.userid}/projects`)
       } catch (error) {
+        res.render('error')
         return res.status(400).json(error)
       }
     }
@@ -125,6 +140,7 @@ const update_project = async (req,res) => {
         res.redirect(`/${req.params.userid}/projects`)
       } catch (error) {
         console.log('error',error.response)
+        res.render('error')
         return res.status(400).json(error.response)
       }
     }

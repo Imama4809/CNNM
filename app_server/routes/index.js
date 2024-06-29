@@ -11,6 +11,8 @@ router.use(methodOverride('_method'));
 
 router.get('/login', Ctrl_users.login_user_page)
 router.post('/login',Ctrl_users.login_user_credentials)
+
+
 router.get('/signup', Ctrl_users.signup_user_page)
 router.post('/signup', Ctrl_users.signup_user_credentials)
 
