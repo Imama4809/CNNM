@@ -3,10 +3,16 @@ const router = express.Router();
 
 const ctrl_projects = require('../controllers/projects')
 const ctrl_layers = require('../controllers/layers')
+const ctrl_users = require('../controllers/users')
 
 //users page 
 
-
+router
+    .route('/login')
+    .post(ctrl_users.login_user)
+router
+    .route('/signup')
+    .post(ctrl_users.add_user)
 router
     .route('/:userid/projects')
     .get(ctrl_projects.view_projects)

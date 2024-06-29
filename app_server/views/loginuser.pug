@@ -7,12 +7,12 @@ block content
                 .col-md-4
                     .card
                         h2.text-center Login
-                        form(action='/login' method='POST')
+                        form(method='POST')
                             .form-group.mx-3
                                 label(for='username') Username
-                                input#username.form-control(type='text' name='username' required)
+                                input#username.form-control(type='text',name='username', required)
                             .form-group.mx-3
                                 label(for='password') Password
-                                input#password.form-control(type='password' name='password' required)
+                                input#password.form-control(type='password',name='password', required)
                             .d-flex.justify-content-center
                                 button.btn_signup_login.btn-primary.btn-block(style='margin-top:auto;', type='submit') Submit
