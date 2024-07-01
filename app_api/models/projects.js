@@ -137,6 +137,8 @@ const user_schema = new mongoose.Schema({
     username: String,
     email: String,
     encripted_password: String,
+    access_token: String,
+    refresh_token: String,
     projects: [project_schema]
 }
 )

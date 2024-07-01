@@ -1,15 +1,30 @@
 var express = require('express');
 const { ObjectId } = require('mongodb');
+const { stringify } = require('querystring');
 var router = express.Router();
+
+
+const grab_JWT_from_access_token = async (req,res) => {
+    url_for_JWT = 'http://localhost:3000/api/' + req.params.userid 
+    const {default: got} = await import('got')
+    const response_for_JWT = await got(url_for_JWT)
+    const user = JSON.parse(response_for_JWT.body)
+    return user.access_token
+}
+
+//functions will get passed to the verification function and thats why headers include an authorization section
 
 const Projects = async (req,res) => {
     try {
-        url = 'http://localhost:3000/api/' + req.params.userid + '/projects'
-        const params = {}
-        const {default : got} = await import('got')
-        const response = await got(url,params)
-        const projects = JSON.parse(response.body)
-        console.log(response.body)
+        const value = await grab_JWT_from_access_token(req,res)
+        const headers = {
+            authorization: 'Bearer ' + value,
+            cookies : JSON.stringify(req.cookies)
+        };
+        url_to_access_webpage = 'http://localhost:3000/api/' + req.params.userid + '/projects'
+        const {default: got} = await import('got')
+        const response_for_webpage = await got(url_to_access_webpage, {headers: headers});
+        const projects = JSON.parse(response_for_webpage.body)
 
         res.render('viewprojects',{
             userid: req.params.userid,
@@ -21,18 +36,23 @@ const Projects = async (req,res) => {
 
 
 const view_add_project_page = async (req,res) => {
-    url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' 
+    url = 'http://localhost:3000/api/' + req.params.userid + '/projects'
     try {
-      const {default: got} = await import('got')
-      const response = await got(url)
-      res.render('addproject')
+        const value = await grab_JWT_from_access_token(req,res)
+        const headers = {
+            authorization: 'Bearer ' + value,
+            cookies : JSON.stringify(req.cookies)
+        };
+        const {default: got} = await import('got')
+        const response = await got(url,{headers: headers})
+        res.render('addproject')
     } catch (error) {
-      res.render('error')
-    //   return res.status(400).json(error)
+        res.render('error')
     }
 }
 
 const add_project = async (req,res) => {
+    
     const {userid} = req.params;
     const form_data = req.body;
     if (form_data.shuffle == 'on') {
@@ -46,10 +66,16 @@ const add_project = async (req,res) => {
         form_data.augment = false
     }
     try {
+        const value = await grab_JWT_from_access_token(req,res)
+        const headers = {
+            authorization: 'Bearer ' + value,
+            cookies : JSON.stringify(req.cookies)
+        };
         url = 'http://localhost:3000/api/' + req.params.userid + '/projects'
         const {default : got} = await import('got')
         const response = await got.post(url, {
             json: form_data,
+            headers:headers,
             responseType: 'json'
         });
         console.log('success', response.body)
@@ -61,10 +87,15 @@ const add_project = async (req,res) => {
 
 const specific_project = async (req, res) => {
     const url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' + req.params.projectid;
-    const params = {};
     try {
+        const value = await grab_JWT_from_access_token(req,res)
+        const headers = {
+            authorization: 'Bearer ' + value,
+            cookies : JSON.stringify(req.cookies)
+        };
         const {default : got} = await import('got')
-        const response = await got(url, params);
+        const response = await got(url, {headers:headers});
+        console.log('hi')
         const project = JSON.parse(response.body);
         const layers = project.layers
         let max_order = 0;
@@ -93,17 +124,29 @@ const specific_project = async (req, res) => {
         });
     } catch (error) {
         res.render('error')
-        res.status(500).send('Error fetching project details');
+        // res.status(500).send('Error fetching project details');
     }
 }
 
 
-const view_update_project_page = (req,res) => {
-    //need a get request 
-    res.render('updateproject', {
-        userid: req.params.userid,
-        projectid:req.params.projectid
-    })
+const view_update_project_page = async (req,res) => {
+
+    url = 'http://localhost:3000/api/' + req.params.userid + '/projects' + req.params.projectid
+    try {
+        const value = await grab_JWT_from_access_token(req,res)
+        const headers = {
+            authorization: 'Bearer ' + value,
+            cookies : JSON.stringify(req.cookies)
+        };
+        const {default: got} = await import('got')
+        const response = await got(url,{headers: headers})
+        res.render('updateproject', {
+            userid: req.params.userid,
+            projectid:req.params.projectid
+        })
+    } catch (err) {
+        res.render('error')
+    }
 }
 
 const update_project = async (req,res) => {
@@ -123,8 +166,14 @@ const update_project = async (req,res) => {
     if (form_data._method == 'PUT') {
       try {
         const {default: got} = await import('got')
+        const value = await grab_JWT_from_access_token(req,res)
+        const headers = {
+            authorization: 'Bearer ' + value,
+            cookies : JSON.stringify(req.cookies)
+        };
         const response = await got.put(url, {
           json: form_data,
+          headers: headers,
           responseType: 'json'
         })
         res.redirect(`/${req.params.userid}/projects`)
@@ -135,8 +184,13 @@ const update_project = async (req,res) => {
     }
     if (form_data._method == 'DELETE') {
       try {
+        const value = await grab_JWT_from_access_token(req,res)
+        const headers = {
+            authorization: 'Bearer ' + value,
+            cookies : JSON.stringify(req.cookies)
+        };
         const {default: got} = await import('got')
-        const response = await got.delete(url)
+        const response = await got.delete(url, {headers,headers})
         res.redirect(`/${req.params.userid}/projects`)
       } catch (error) {
         console.log('error',error.response)
@@ -154,3 +208,7 @@ module.exports = {
     view_update_project_page,
     update_project
 }
+
+
+
+

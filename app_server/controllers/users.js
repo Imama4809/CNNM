@@ -2,6 +2,7 @@ var express = require('express');
 const { ObjectId } = require('mongodb');
 var router = express.Router();
 
+
 // Define a route for the home page
 login_user_page = (req, res, )  => {
     res.render('loginuser');
@@ -16,6 +17,7 @@ login_user_credentials = async (req,res) => {
             json:form_data,
             responseType: 'json'
         })
+        res.cookie(response.headers['set-cookie'][0])
         res.redirect(`/${response.body._id}/projects`)
     } catch {
         res.status(500).send('Error')
@@ -23,7 +25,7 @@ login_user_credentials = async (req,res) => {
 }
 
 signup_user_page = (req,res) =>  {
-    res.render('signupuser')
+    res.render('signupuser')``
 }
 
 signup_user_credentials = async (req,res) => {
@@ -34,6 +36,7 @@ signup_user_credentials = async (req,res) => {
         const response = await got.post(url, {
             json:form_data,
             responseType: 'json'
+            
         })
         console.log(response.body)
         res.redirect(`/${response.body._id}/projects`)

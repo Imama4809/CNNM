@@ -2,7 +2,10 @@ const { urlencoded } = require('express');
 const mongoose = require('mongoose');
 const users = mongoose.model('User');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+
 
 //what functions do I need
 //signup
@@ -10,6 +13,17 @@ const jwt = require('jsonwebtoken')
 //delete_user
 //update_user
 
+const view_user = async (req,res) => {
+    try {
+        specific_user = await users.find({"_id": req.params.userid})
+        if (specific_user.length == 0){
+            return res.status(404).json({"message":"user not found"})
+        }
+        return res.status(200).json(specific_user[0])
+    } catch (err) {
+        return res.status(400).json(err)
+    }
+}
 
 const login_user = async (req,res) => {
     try {
@@ -20,9 +34,22 @@ const login_user = async (req,res) => {
         specific_user = specific_user[0]
         const match = await bcrypt.compare(req.body.password,specific_user.encripted_password)
         if (!match){
-
             return res.status(401).json({"message":"invalid password"})
         }
+         //JWT's
+        const access_token = jwt.sign(
+            {"username": req.body.username},
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '1s'}
+        );
+        const refresh_token = jwt.sign(
+            {"username": req.body.username},
+            process.env.REFRESH_TOKEN_SECRET,
+            { expiresIn: '40s'}
+        );
+        res.cookie('jwt',refresh_token, {httpOnly: true, maxAge: 24*60*60*1000})
+        specific_user.access_token = access_token
+        await specific_user.save()
         return res.status(202).json(specific_user)
     }catch (err) {
         return res.status(400).json(err)
@@ -62,6 +89,7 @@ const add_user = async (req,res) => {
 }
 
 module.exports = {
+    view_user,
     login_user,
     add_user
 }

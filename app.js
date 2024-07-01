@@ -3,12 +3,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
 require('./app_api/models/db')
+
+
 
 var app = express();
 
 var indexRouter = require('./app_server/routes/index');
 var apiRouter = require('./app_api/routes/index');
+
+var corsOptions = {
+  origin: 'http://localhost:3000/api/',
+  credentials: true, 
+};
 
 
 app.set('views', path.join(__dirname, 'app_server', 'views'));
@@ -16,6 +24,7 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
