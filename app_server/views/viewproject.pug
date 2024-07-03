@@ -38,7 +38,8 @@ block content
     .card-body 
       h5 Data Training Settings
       p More text for the new card
-  a.btn3.btn-primary.mb-2(style='width:17%;height:50px;float:Right', onclick = '') Run Layer
+  form(method='POST')
+    button.btn.btn-primary.mb-1(style='width:17%;height:50px;float:Right') Run Layer
   
 
 append scripts
@@ -49,6 +50,9 @@ append scripts
     var projectid = ids[1]
     var basescript = `/${userid}/projects/${projectid}`
 
+    const clicked = () => {
+      console.log('hi') 
+    }
     const find_layer_via_name = (layername) => {
       for (const layer of layers) {
         if (layer.name === layername) {

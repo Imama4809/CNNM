@@ -1,6 +1,8 @@
 var express = require('express');
 const { ObjectId } = require('mongodb');
 const { stringify } = require('querystring');
+const { exec } = require('child_process');
+const path = require('path');
 var router = express.Router();
 
 
@@ -52,7 +54,6 @@ const view_add_project_page = async (req,res) => {
 }
 
 const add_project = async (req,res) => {
-    
     const {userid} = req.params;
     const form_data = req.body;
     if (form_data.shuffle == 'on') {
@@ -95,7 +96,6 @@ const specific_project = async (req, res) => {
         };
         const {default : got} = await import('got')
         const response = await got(url, {headers:headers});
-        console.log('hi')
         const project = JSON.parse(response.body);
         const layers = project.layers
         let max_order = 0;
@@ -127,6 +127,23 @@ const specific_project = async (req, res) => {
         // res.status(500).send('Error fetching project details');
     }
 }
+
+
+const run_python_code = (req, res) => {
+    // Replace with the full path to your Python executable
+    const pythonPath = 'C:/Users/imama/Torch_practice/Scripts/python.exe';
+    const command = `${pythonPath} app_server/pythoncodes/helloworld.py`;
+
+    exec(command, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`exec error: ${error}`);
+            return res.status(500).send('Error executing Python script');
+        }
+        const result = stdout.trim();
+        console.log(result); // Log the output from Python script
+        res.send(result); // Send the output as response or handle it as needed
+    });
+};
 
 
 const view_update_project_page = async (req,res) => {
@@ -203,6 +220,7 @@ const update_project = async (req,res) => {
 module.exports = {
     Projects,
     specific_project,
+    run_python_code,
     view_add_project_page,
     add_project,
     view_update_project_page,

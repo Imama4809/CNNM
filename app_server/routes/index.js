@@ -25,6 +25,7 @@ router.post('/:userid/projects/addproject', Ctrl_projects.add_project)
 
 
 router.get('/:userid/projects/:projectid', Ctrl_projects.specific_project)
+router.post('/:userid/projects/:projectid', Ctrl_projects.run_python_code)
 
 router.get('/:userid/projects/:projectid/updateproject', Ctrl_projects.view_update_project_page)
 router.post('/:userid/projects/:projectid/updateproject', Ctrl_projects.update_project)

@@ -37,7 +37,7 @@ const verify_JWT = async (req,res,next) => {
             const access_token = jwt.sign(
                 {"username": specific_user.username},
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '1s'}
+                { expiresIn: '900s'}
             );
             specific_user.access_token = access_token
             await specific_user.save()

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const users = mongoose.model('User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+// require('dotenv').config();
 
 
 
@@ -40,12 +40,12 @@ const login_user = async (req,res) => {
         const access_token = jwt.sign(
             {"username": req.body.username},
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '1s'}
+            { expiresIn: '900s'}
         );
         const refresh_token = jwt.sign(
             {"username": req.body.username},
             process.env.REFRESH_TOKEN_SECRET,
-            { expiresIn: '40s'}
+            { expiresIn: '1d'}
         );
         res.cookie('jwt',refresh_token, {httpOnly: true, maxAge: 24*60*60*1000})
         specific_user.access_token = access_token
