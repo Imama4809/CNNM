@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { access } = require('fs');
 const { verify } = require('crypto');
-require('dotenv').config();
+// require('dotenv').config();
 
 
 //figure this out 
