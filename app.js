@@ -5,14 +5,16 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 require('./app_api/models/db')
 
-
+const port = process.env.PORT || 4000;
 
 var app = express();
 
 var indexRouter = require('./app_server/routes/index');
 var apiRouter = require('./app_api/routes/index');
 
-
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
 
 app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'pug');
