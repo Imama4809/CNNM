@@ -39,6 +39,9 @@ router.get('/:userid/projects/:projectid/:layerid', Ctrl_layers.specific_layer)
 router.post('/:userid/projects/:projectid/:layerid', Ctrl_layers.update_layer)
 
 
+router.get('/', (req,res) => {
+    res.render('index')
+});
 
 
 module.exports = router;
