@@ -25,7 +25,7 @@ login_user_credentials = async (req,res) => {
 }
 
 signup_user_page = (req,res) =>  {
-    res.render('signupuser')``
+    res.render('signupuser')
 }
 
 signup_user_credentials = async (req,res) => {

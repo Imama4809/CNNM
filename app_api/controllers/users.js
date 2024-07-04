@@ -57,21 +57,32 @@ const login_user = async (req,res) => {
 }
 
 const add_user = async (req,res) => {
+    console.log('hi')
+    console.log('hi')
+
     if (req.body.password !== req.body.retyped_password) {
         return res.status(400).json({"message":"your passwords do not match"})
     }
+    console.log('hi')
 
     if (!req.body.email || !req.body.username) {
         return res.status(400).json({"message":"please fill out all the fields"})
     }
+    console.log('hi')
+
     specific_user = await users.find({"username":req.body.username})
     if (specific_user.length !== 0){
         return res.status(400).json({"message":"username already exists"})
     }
+    console.log('hi')
+
     specific_email = await users.find({"email":req.body.email})
     if (specific_email.length !== 0){
         return res.status(400).json({"message":"email already exists"})
     }
+    console.log('hi')
+
+    
     
     try {
         var salt = await bcrypt.genSalt(10);
