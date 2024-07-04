@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const users = mongoose.model('User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// require('dotenv').config()
+require('dotenv').config()
 
 
 
@@ -57,8 +57,6 @@ const login_user = async (req,res) => {
 }
 
 const add_user = async (req,res) => {
-    console.log('hi')
-    console.log('hi')
 
     if (req.body.password !== req.body.retyped_password) {
         return res.status(400).json({"message":"your passwords do not match"})
