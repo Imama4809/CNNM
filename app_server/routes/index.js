@@ -40,6 +40,7 @@ router.post('/:userid/projects/:projectid/:layerid', Ctrl_layers.update_layer)
 
 
 router.get('/', (req,res) => {
+    console.log('hello world')
     res.render('index')
 });
 
