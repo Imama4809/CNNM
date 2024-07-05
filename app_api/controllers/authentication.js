@@ -8,7 +8,6 @@ const { verify } = require('crypto');
 // require('dotenv').config();
 
 
-//figure this out 
 const verify_JWT = async (req,res,next) => {
     const auth_header = req.headers.authorization || req.headers.Authorization 
     if (!auth_header) {
@@ -51,42 +50,6 @@ const verify_JWT = async (req,res,next) => {
     }
     
 }
-
-// const refresh_JWT = (req,res) => {
-//     //find user to add access token to it 
-//     const cookies = JSON.parse(req.headers.cookies)
-//     if (!cookies?.jwt) throw (err)
-//     try {
-//         jwt.verify(
-//             cookies.jwt,
-//             process.env.REFRESH_TOKEN_SECRET,
-//             async (err,decoded) => {
-                
-//                 try {
-//                     if (err) res.status(403).json({"message":"access denied"})
-//                     var specific_user = await users.find({"_id": req.params.userid})
-//                     if (specific_user.length == 0) {
-//                         return res.status(403).json({"message":"access denied"})
-//                     }
-//                     specific_user = specific_user[0]
-//                     const access_token = jwt.sign(
-//                         {"username": specific_user.username},
-//                         process.env.ACCESS_TOKEN_SECRET,
-//                         { expiresIn: '30s'}
-//                     );
-//                     specific_user.access_token = access_token
-//                     await specific_user.save()
-//                 } catch (err){
-//                     return res.status(403).json({"message":"access denied"})
-//                 }
-//             }
-//         )
-//     } catch (err){
-//         return res.status(403).json({"message":"access denied"})
-//     }
-//     // const refresh_token = cookies.jwt
-
-// }
 
 module.exports = {
     verify_JWT

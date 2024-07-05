@@ -5,12 +5,14 @@ var router = express.Router();
 
 // Define a route for the home page
 login_user_page = (req, res, )  => {
+    console.log(req.protocol + '://' + req.get('host'))
     res.render('loginuser');
 };
 
 login_user_credentials = async (req,res) => {
     const form_data = req.body
-    url = 'http://localhost:3000/api/login'
+
+    url = req.protocol + '://' + req.get('host') + '/api/login'
     try {
         const {default: got} = await import('got')
         const response = await got.post(url, {
@@ -30,7 +32,7 @@ signup_user_page = (req,res) =>  {
 
 signup_user_credentials = async (req,res) => {
     const form_data = req.body
-    url = 'http://localhost:3000/api/signup'
+    url = req.protocol + '://' + req.get('host') + '/api/signup'
     try {
         const {default: got} = await import('got')
         const response = await got.post(url, {
@@ -38,7 +40,6 @@ signup_user_credentials = async (req,res) => {
             responseType: 'json'
             
         })
-        console.log(response.body)
         res.redirect(`/${response.body._id}/projects`)
     } catch (err) {
         res.status(500).send(err)

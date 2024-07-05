@@ -4,7 +4,7 @@ var router = express.Router();
 
 
 const grab_JWT_from_access_token = async (req,res) => {
-  url_for_JWT = 'http://localhost:3000/api/' + req.params.userid 
+  url_for_JWT = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid 
   const {default: got} = await import('got')
   const response_for_JWT = await got(url_for_JWT)
   const user = JSON.parse(response_for_JWT.body)
@@ -18,14 +18,13 @@ const add_layer = async (req, res) => {
     const { userid, projectid } = req.params;
     const form_data = req.body;
     
-    console.log(form_data)
     try {
       const value = await grab_JWT_from_access_token(req,res)
       const headers = {
           authorization: 'Bearer ' + value,
           cookies : JSON.stringify(req.cookies)
       };
-      url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' + req.params.projectid
+      url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid
       const {default : got} = await import('got')
       response = await got.post(url,{
         json: form_data,
@@ -41,7 +40,7 @@ const add_layer = async (req, res) => {
 
 
 const specific_layer = async (req,res) => {
-    url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' + req.params.projectid + '/layers/' + req.params.layerid
+    url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid + '/layers/' + req.params.layerid
     try {
       const value = await grab_JWT_from_access_token(req,res)
       const headers = {
@@ -64,7 +63,7 @@ const specific_layer = async (req,res) => {
 
 const update_layer = async (req, res) => {
   const { userid, projectid, layerid } = req.params;
-  url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' + req.params.projectid + '/layers/' + req.params.layerid
+  url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid + '/layers/' + req.params.layerid
   const form_data = req.body;
   if (form_data._method == 'PUT') {
     try {
@@ -109,7 +108,7 @@ const update_layer = async (req, res) => {
 
 
 const view_add_layer_page = async (req,res) => {
-    url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' + req.params.projectid
+    url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid
     try {
       const {default: got} = await import('got')
       const value = await grab_JWT_from_access_token(req,res)
