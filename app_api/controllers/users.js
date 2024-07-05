@@ -37,21 +37,25 @@ const login_user = async (req,res) => {
             return res.status(401).json({"message":"invalid password"})
         }
          //JWT's
+        console.log("next is jwt")
         const access_token = jwt.sign(
             {"username": req.body.username},
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: '900s'}
         );
+        console.log('refresh now')
         const refresh_token = jwt.sign(
             {"username": req.body.username},
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d'}
         );
+        console.log('COOKIE')
         res.cookie('jwt',refresh_token, {httpOnly: true, maxAge: 24*60*60*1000})
         specific_user.access_token = access_token
         await specific_user.save()
         return res.status(202).json(specific_user)
     }catch (err) {
+        console.log('general error')
         return res.status(400).json(err)
     }
 }
