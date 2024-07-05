@@ -132,7 +132,7 @@ const specific_project = async (req, res) => {
 
 const run_python_code = (req, res) => {
     // Replace with the full path to your Python executable
-    const pythonPath = 'C:/Users/imama/Torch_practice/Scripts/python.exe';
+    const pythonPath = 'C:/Users/imama/CNNM/.venv/Scripts/python.exe';
     const command = `${pythonPath} app_server/pythoncodes/helloworld.py`;
 
     exec(command, (error, stdout, stderr) => {

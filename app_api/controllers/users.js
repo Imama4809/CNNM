@@ -37,24 +37,19 @@ const login_user = async (req,res) => {
             return res.status(401).json({"message":"invalid password"})
         }
          //JWT's
-        console.log("next is jwt")
         const access_token = jwt.sign(
             {"username": req.body.username},
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '900s'}
+            { expiresIn: '1s'}
         );
-        console.log('refresh now')
         const refresh_token = jwt.sign(
             {"username": req.body.username},
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d'}
         );
-        console.log('COOKIE')
         res.cookie('jwt',refresh_token, {httpOnly: true, maxAge: 24*60*60*1000})
         specific_user.access_token = access_token
-        console.log('this is okay')
         await specific_user.save()
-        console.log('okay fine')
         return res.status(202).json(specific_user)
     }catch (err) {
         console.log('general error')
@@ -67,24 +62,20 @@ const add_user = async (req,res) => {
     if (req.body.password !== req.body.retyped_password) {
         return res.status(400).json({"message":"your passwords do not match"})
     }
-    console.log('hi')
 
     if (!req.body.email || !req.body.username) {
         return res.status(400).json({"message":"please fill out all the fields"})
     }
-    console.log('hi')
 
     specific_user = await users.find({"username":req.body.username})
     if (specific_user.length !== 0){
         return res.status(400).json({"message":"username already exists"})
     }
-    console.log('hi')
 
     specific_email = await users.find({"email":req.body.email})
     if (specific_email.length !== 0){
         return res.status(400).json({"message":"email already exists"})
     }
-    console.log('hi')
 
     
     
