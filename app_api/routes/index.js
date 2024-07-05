@@ -19,8 +19,8 @@ router
     .get(ctrl_users.view_user)
 router
     .route('/:userid/projects')
-    .get(ctrl_authentication.verify_JWT,ctrl_projects.view_projects)
-    .post(ctrl_authentication.verify_JWT,ctrl_projects.create_project)
+    .get(ctrl_projects.view_projects)
+    .post(ctrl_projects.create_project)
 router 
     .route('/:userid/projects/:projectid')
     .get(ctrl_authentication.verify_JWT,ctrl_layers.view_project)
