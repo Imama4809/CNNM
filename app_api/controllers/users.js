@@ -52,7 +52,9 @@ const login_user = async (req,res) => {
         console.log('COOKIE')
         res.cookie('jwt',refresh_token, {httpOnly: true, maxAge: 24*60*60*1000})
         specific_user.access_token = access_token
+        console.log('this is okay')
         await specific_user.save()
+        console.log('okay fine')
         return res.status(202).json(specific_user)
     }catch (err) {
         console.log('general error')
