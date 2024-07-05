@@ -7,7 +7,7 @@ var router = express.Router();
 
 
 const grab_JWT_from_access_token = async (req,res) => {
-    url_for_JWT = 'http://localhost:3000/api/' + req.params.userid 
+    url_for_JWT = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid 
     const {default: got} = await import('got')
     const response_for_JWT = await got(url_for_JWT)
     const user = JSON.parse(response_for_JWT.body)
@@ -23,7 +23,7 @@ const Projects = async (req,res) => {
             authorization: 'Bearer ' + value,
             cookies : JSON.stringify(req.cookies)
         };
-        url_to_access_webpage = 'http://localhost:3000/api/' + req.params.userid + '/projects'
+        url_to_access_webpage = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects'
         const {default: got} = await import('got')
         const response_for_webpage = await got(url_to_access_webpage, {headers: headers});
         const projects = JSON.parse(response_for_webpage.body)
@@ -38,7 +38,7 @@ const Projects = async (req,res) => {
 
 
 const view_add_project_page = async (req,res) => {
-    url = 'http://localhost:3000/api/' + req.params.userid + '/projects'
+    url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects'
     try {
         const value = await grab_JWT_from_access_token(req,res)
         const headers = {
@@ -47,6 +47,7 @@ const view_add_project_page = async (req,res) => {
         };
         const {default: got} = await import('got')
         const response = await got(url,{headers: headers})
+        console.log('rendering')
         res.render('addproject')
     } catch (error) {
         res.render('error')
@@ -72,7 +73,7 @@ const add_project = async (req,res) => {
             authorization: 'Bearer ' + value,
             cookies : JSON.stringify(req.cookies)
         };
-        url = 'http://localhost:3000/api/' + req.params.userid + '/projects'
+        url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects'
         const {default : got} = await import('got')
         const response = await got.post(url, {
             json: form_data,
@@ -87,7 +88,7 @@ const add_project = async (req,res) => {
 }
 
 const specific_project = async (req, res) => {
-    const url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' + req.params.projectid;
+    const url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid;
     try {
         const value = await grab_JWT_from_access_token(req,res)
         const headers = {
@@ -148,7 +149,7 @@ const run_python_code = (req, res) => {
 
 const view_update_project_page = async (req,res) => {
 
-    url = 'http://localhost:3000/api/' + req.params.userid + '/projects' + req.params.projectid
+    url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects' + req.params.projectid
     try {
         const value = await grab_JWT_from_access_token(req,res)
         const headers = {
@@ -168,7 +169,7 @@ const view_update_project_page = async (req,res) => {
 
 const update_project = async (req,res) => {
     const { userid, projectid, layerid } = req.params;
-    url = 'http://localhost:3000/api/' + req.params.userid + '/projects/' + req.params.projectid
+    url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid
     const form_data = req.body;
         if (form_data.shuffle == 'on') {
         form_data.shuffle = true
