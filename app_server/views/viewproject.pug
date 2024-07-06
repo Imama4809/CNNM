@@ -3,31 +3,34 @@ extends layout
 block content
   h2 #{project.name}
   h5 Press the arrow keys to move through the layers
-  .owl-carousel(style='width: 800px; height: 400px; margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);')
-    each item, index in max_order_list
-      .item
-        .row
-          .col-md-12
-            .card
-              .card-body
-                .dropdown(style='float:left')
-                  button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdownMenuButton${index}`, data-bs-toggle='dropdown', aria-expanded='false')
-                    | Choose layer #{item}
-                  ul.dropdown-menu(aria-labelledby=`dropdownMenuButton${index}`, style='max-height: 300%; overflow-y: scroll;')
-                    each layer in layers
-                      if layer.order == item
-                        li
-                          a.dropdown-item(href='#', data-order=item, data-layer=JSON.stringify(layer), onclick='handleClick(this)') #{layer.name}
-                h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') sorry
-                p.card-text(id=`card-text-main-${index + 1}`) 
+  form(method='POST')
+    input(type='hidden', name='selected_layer_data', id='selected_layer_data')
+    .owl-carousel(style='width: 800px; height: 400px; margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);')
+      each item, index in max_order_list
+        .item
+          .row
+            .col-md-12
+              .card
+                .card-body
+                  .dropdown(style='float:left')
+                    button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdownMenuButton${index}`, data-bs-toggle='dropdown', aria-expanded='false')
+                      | Choose layer #{item}
+                    ul.dropdown-menu(aria-labelledby=`dropdownMenuButton${index}`, style='max-height: 300%; overflow-y: scroll;')
+                      each layer in layers
+                        if layer.order == item
+                          li
+                            a.dropdown-item(href='#', data-order=item, data-layer=JSON.stringify(layer), onclick='handleClick(this)') #{layer.name}
+                  h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') sorry
+                  p.card-text(id=`card-text-main-${index + 1}`) 
+                    br
+                    | Note: The Edit Layer button will not work until you select a layer
+                  p.card-text(id=`card-text1-${index + 1}`,style='float:left') 
                   br
-                  | Note: The Edit Layer button will not work until you select a layer
-                p.card-text(id=`card-text1-${index + 1}`,style='float:left') 
-                br
-                br
-                br
-                br
-                a.btn3.btn-primary.mb-2(style='width:30%;float:Right', id=`navigate-button-${index+1}`, href='#') Edit Layer
+                  br
+                  br
+                  br
+                  a.btn3.btn-primary.mb-2(style='width:30%;float:Right', id=`navigate-button-${index+1}`, href='#') Edit Layer
+    button.btn.btn-primary.mb-1(style='width:17%;height:50px;float:Right') Run Layer
 
   .card.right-align
     .card-body 
@@ -38,12 +41,12 @@ block content
     .card-body 
       h5 Data Training Settings
       p More text for the new card
-  form(method='POST')
-    button.btn.btn-primary.mb-1(style='width:17%;height:50px;float:Right') Run Layer
+    
   
 
 append scripts
   script.
+    let selected_layer_data = {}
     var layerlist = !{JSON.stringify(layerlist)};
     var ids = !{JSON.stringify(ids)}
     var userid = ids[0] 
@@ -67,7 +70,8 @@ append scripts
       const card_title_1 = document.querySelector(`#card-title-${order}`);
       const card_text_main = document.querySelector(`#card-text-main-${order}`);
       const card_text_1 = document.querySelector(`#card-text1-${order}`)
-
+      document.getElementById('selected_layer_data').value = JSON.stringify(selected_layer_data);
+      console.log(document.getElementById('selected_layer_data').value )
       if (card_title_1) { 
         card_title_1.textContent = layer.name;
       }
@@ -108,7 +112,9 @@ append scripts
     };
 
     const handleClick = (element) => {
+
       const order = element.getAttribute('data-order');
       const layer = JSON.parse(element.getAttribute('data-layer'));
-      update(order, layer);
+      selected_layer_data[order] = layer; // Store selected layer data based on order
+      update(order, layer); // Update UI
     };

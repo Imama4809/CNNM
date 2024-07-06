@@ -4,6 +4,7 @@ const { stringify } = require('querystring');
 const { exec } = require('child_process');
 const path = require('path');
 var router = express.Router();
+// require('dotenv').config()
 
 
 const grab_JWT_from_access_token = async (req,res) => {
@@ -47,7 +48,6 @@ const view_add_project_page = async (req,res) => {
         };
         const {default: got} = await import('got')
         const response = await got(url,{headers: headers})
-        console.log('rendering')
         res.render('addproject')
     } catch (error) {
         res.render('error')
@@ -130,20 +130,18 @@ const specific_project = async (req, res) => {
 }
 
 
-const run_python_code = (req, res) => {
-    // Replace with the full path to your Python executable
-    const pythonPath = 'C:/Users/imama/CNNM/Torch/Scripts/python.exe';
-    const command = `${pythonPath} app_server/pythoncodes/helloworld.py`;
-
-    exec(command, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`exec error: ${error}`);
-            return res.status(500).send('Error executing Python script');
-        }
-        const result = stdout.trim();
-        console.log(result); // Log the output from Python script
-        res.send(result); // Send the output as response or handle it as needed
-    });
+const run_python_code = async (req, res) => {
+    const url = process.env.API_URL;
+    console.log(req.body)
+    const formData = { name: 'bob'};
+    const function_key = process.env.FUNCTION_KEY
+    try {
+        const { default: got } = await import('got');
+        const response = await got.post(`${url}?code=${function_key}`, { json: formData });
+        console.log(response.body);
+    } catch (err) {
+        console.log('error', err);
+    }
 };
 
 
