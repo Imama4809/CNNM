@@ -2,7 +2,9 @@ import azure.functions as func
 import datetime
 import json
 import logging
+import torchvision
 import torch 
+print(torchvision.__version__)
 
 app = func.FunctionApp()
 
