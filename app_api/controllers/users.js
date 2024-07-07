@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const users = mongoose.model('User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// require('dotenv').config()
+require('dotenv').config()
 
 
 
@@ -47,9 +47,9 @@ const login_user = async (req,res) => {
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d'}
         );
-        res.cookie('jwt',refresh_token, {httpOnly: true, maxAge: 24*60*60*1000})
-        specific_user.access_token = access_token
-        await specific_user.save()
+        res.cookie('jwt_access', access_token, {httpOnly: true, maxAge: 15*60*1000})
+        res.cookie('jwt_refresh',refresh_token, {httpOnly: true, maxAge: 24*60*60*1000})
+        console.log('hisdfasdf')
         return res.status(202).json(specific_user)
     }catch (err) {
         console.log('general error')

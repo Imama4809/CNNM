@@ -19,15 +19,12 @@ login_user_credentials = async (req,res) => {
             json:form_data,
             responseType: 'json'
         })
-        console.log("okay this works")
         res.cookie(response.headers['set-cookie'][0])
-        console.log('hi')
+        res.cookie(response.headers['set-cookie'][1])
         res.redirect(`/${response.body._id}/projects`)
-        console.log(response.headers['set-cookie'][0])
-        console.log(response.body._id)
     } catch {
         res.status(500).send('Error')
-    }
+    }   
 }
 
 signup_user_page = (req,res) =>  {

@@ -10,24 +10,19 @@ const { verify } = require('crypto');
 
 const verify_JWT = async (req,res,next) => {
     const auth_header = req.headers.authorization || req.headers.Authorization 
-    if (!auth_header) {
-        return res.status(401).json({"message":"not found"})
-    }
-    const token = auth_header.split(' ')[1]
+    const cookies = JSON.parse(req.headers.cookies)
+    console.log(cookies)
+    const access_token = cookies.jwt_access
+    const refresh_token = cookies.jwt_refresh
     try {
-        // const token = req.headers['authorization'];
-        if (!token) {
-            return res.status(403).json({ "message": "access denied" });
-        }
-        const decoded = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        req.user = decoded;
-        next();
+        
+        const decoded = await jwt_access.verify(access_token,process.env.ACCESS_TOKEN_SECRET)
+        req.user = decoded
+        next()
     } catch (err) {
-        const cookies = JSON.parse(req.headers.cookies)
-        console.log(cookies)
-        if (!cookies?.jwt) return res.status(403).json({"message":"access denied"})
+        if (!cookies?.jwt_refresh) return res.status(403).json({"message":"access denied"})
         try {
-            await jwt.verify(cookies.jwt, process.env.REFRESH_TOKEN_SECRET) //will send an error if unable to 
+            await jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET) //will send an error if unable to 
             var specific_user = await users.find({"_id": req.params.userid})
             if (specific_user.length == 0) {
                 return res.status(403).json({"message":"access denied"})
@@ -38,8 +33,7 @@ const verify_JWT = async (req,res,next) => {
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '900s'}
             );
-            specific_user.access_token = access_token
-            await specific_user.save()
+            res.cookie('jwt_access', access_token, {httpOnly: true, maxAge: 15^60*1000})
             const decoded = await jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET);
             req.user = decoded;
             next()
