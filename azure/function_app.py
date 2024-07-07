@@ -1,16 +1,16 @@
 import azure.functions as func
+import datetime
+import json
 import logging
-import torch
-import torchvision
-# print(torch.__version__)
-app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
+import torch 
 
-@app.route(route="http_trigger")
+app = func.FunctionApp()
+
+@app.route(route="http_trigger", auth_level=func.AuthLevel.FUNCTION)
 def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
-    print("hi this works")
-    name = req.params.get('name')
 
+    name = req.params.get('name')
     if not name:
         try:
             req_body = req.get_json()

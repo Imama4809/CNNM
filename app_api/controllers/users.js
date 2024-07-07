@@ -49,7 +49,6 @@ const login_user = async (req,res) => {
         );
         res.cookie('jwt_access', access_token, {httpOnly: true, maxAge: 15*60*1000})
         res.cookie('jwt_refresh',refresh_token, {httpOnly: true, maxAge: 24*60*60*1000})
-        console.log('hisdfasdf')
         return res.status(202).json(specific_user)
     }catch (err) {
         console.log('general error')
