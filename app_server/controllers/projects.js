@@ -7,21 +7,12 @@ var router = express.Router();
 require('dotenv').config()
 
 
-const grab_JWT_from_access_token = async (req,res) => {
-    url_for_JWT = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid 
-    const {default: got} = await import('got')
-    const response_for_JWT = await got(url_for_JWT)
-    const user = JSON.parse(response_for_JWT.body)
-    return user.access_token
-}
 
 //functions will get passed to the verification function and thats why headers include an authorization section
 
 const Projects = async (req,res) => {
     try {
-        const value = await grab_JWT_from_access_token(req,res)
         const headers = {
-            authorization: 'Bearer ' + value,
             cookies : JSON.stringify(req.cookies)
         };
         url_to_access_webpage = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects'
@@ -41,9 +32,7 @@ const Projects = async (req,res) => {
 const view_add_project_page = async (req,res) => {
     url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects'
     try {
-        const value = await grab_JWT_from_access_token(req,res)
         const headers = {
-            authorization: 'Bearer ' + value,
             cookies : JSON.stringify(req.cookies)
         };
         const {default: got} = await import('got')
@@ -68,9 +57,7 @@ const add_project = async (req,res) => {
         form_data.augment = false
     }
     try {
-        const value = await grab_JWT_from_access_token(req,res)
         const headers = {
-            authorization: 'Bearer ' + value,
             cookies : JSON.stringify(req.cookies)
         };
         url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects'
@@ -90,9 +77,7 @@ const add_project = async (req,res) => {
 const specific_project = async (req, res) => {
     const url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid;
     try {
-        const value = await grab_JWT_from_access_token(req,res)
         const headers = {
-            authorization: 'Bearer ' + value,
             cookies : JSON.stringify(req.cookies)
         };
         const {default : got} = await import('got')
@@ -147,11 +132,10 @@ const run_python_code = async (req, res) => {
 
 const view_update_project_page = async (req,res) => {
 
-    url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects' + req.params.projectid
+    url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid 
+
     try {
-        const value = await grab_JWT_from_access_token(req,res)
         const headers = {
-            authorization: 'Bearer ' + value,
             cookies : JSON.stringify(req.cookies)
         };
         const {default: got} = await import('got')
@@ -182,9 +166,7 @@ const update_project = async (req,res) => {
     if (form_data._method == 'PUT') {
       try {
         const {default: got} = await import('got')
-        const value = await grab_JWT_from_access_token(req,res)
         const headers = {
-            authorization: 'Bearer ' + value,
             cookies : JSON.stringify(req.cookies)
         };
         const response = await got.put(url, {
@@ -200,9 +182,7 @@ const update_project = async (req,res) => {
     }
     if (form_data._method == 'DELETE') {
       try {
-        const value = await grab_JWT_from_access_token(req,res)
         const headers = {
-            authorization: 'Bearer ' + value,
             cookies : JSON.stringify(req.cookies)
         };
         const {default: got} = await import('got')

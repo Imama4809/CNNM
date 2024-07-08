@@ -14,13 +14,13 @@ block content
                 label.form-label(for='project_name') Project Name
                 input.form-control(type='text', id='name', name='name')
               .mb-3
-                label.form-label(for='dataset') Dataset
+                label.form-label(for='dataset') Dataset 
                 input.form-control(type='text', id='dataset', name='dataset')
               .mb-3
       .col-md-4
         .card
           .card-body
-            .loading-container(id = 'loading_info')
+            .loading-container(id = 'loading-info')
               h2 Loading Info
               .mb-3
                 label.form-label(for='batch_size') batch_size
@@ -40,7 +40,7 @@ block content
       .col-md-4
         .card
           .card-body           
-            .training-container(id = 'training_info')
+            .training-container(id = 'training-info')
               h2 Training Info
               .mb-3
                 label.form-label(for='epoch') Epoch
@@ -76,14 +76,24 @@ append scripts
         alert('Please fill out all general information fields.');
         return false;
       }
-      const loading_info = document.querySelectorAll('#loading_info input')
+      const dataset = document.getElementById('dataset').value
+      console.log(['MNIST'].indexOf(dataset) )
+      if (!dataset) {
+        alert('Please fill out all general information fields.');
+        return false;
+      }
+      if (['MNIST'].indexOf(dataset) === -1){
+        alert('Not a valid dataset')
+        return false
+      }
+      const loading_info = document.querySelectorAll('#loading-info input')
       for (let input of loading_info) {
         if (!input.value) {
           alert('Please fill out all information fields')
           return false
         }
       }
-      const training_info = document.querySelectorAll('#training_info input')
+      const training_info = document.querySelectorAll('#training-info input')
       for (let input of training_info) {
         if (!input.value) {
           alert('Please fill out all information fields')

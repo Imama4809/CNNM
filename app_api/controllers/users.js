@@ -57,22 +57,27 @@ const login_user = async (req,res) => {
 }
 
 const add_user = async (req,res) => {
+    
 
     if (req.body.password !== req.body.retyped_password) {
+        console.log('hi1')
         return res.status(400).json({"message":"your passwords do not match"})
     }
 
     if (!req.body.email || !req.body.username) {
+        console.log('hi2')
         return res.status(400).json({"message":"please fill out all the fields"})
     }
 
     specific_user = await users.find({"username":req.body.username})
     if (specific_user.length !== 0){
+        console.log('hi3')
         return res.status(400).json({"message":"username already exists"})
     }
 
     specific_email = await users.find({"email":req.body.email})
     if (specific_email.length !== 0){
+        console.log('hi4')
         return res.status(400).json({"message":"email already exists"})
     }
 

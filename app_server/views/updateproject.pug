@@ -78,6 +78,16 @@ append scripts
         alert('Please fill out all general information fields.');
         return false;
       }
+      const dataset = document.getElementById('dataset').value
+      console.log(['MNIST'].indexOf(dataset) )
+      if (!dataset) {
+        alert('Please fill out all general information fields.');
+        return false;
+      }
+      if (['MNIST'].indexOf(dataset) === -1){
+        alert('Not a valid dataset')
+        return false
+      }
       const loading_info = document.querySelectorAll('#loading_info input')
       for (let input of loading_info) {
         if (!input.value) {

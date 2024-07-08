@@ -67,6 +67,16 @@
   margin-bottom: 5rem;
 }
 
+.btn-intro {
+  background-color: #3c4542;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
 
 
 /* Card alignment */

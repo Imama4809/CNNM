@@ -34,6 +34,7 @@ signup_user_page = (req,res) =>  {
 signup_user_credentials = async (req,res) => {
     const form_data = req.body
     url = req.protocol + '://' + req.get('host') + '/api/signup'
+    console.log('hi')
     try {
         const {default: got} = await import('got')
         const response = await got.post(url, {
@@ -41,6 +42,7 @@ signup_user_credentials = async (req,res) => {
             responseType: 'json'
             
         })
+        console.log('hi')
         res.redirect(`/${response.body._id}/projects`)
     } catch (err) {
         res.status(500).send(err)
