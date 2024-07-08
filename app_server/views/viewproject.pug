@@ -30,18 +30,31 @@ block content
                   br
                   br
                   a.btn3.btn-primary.mb-2(style='width:30%;float:Right', id=`navigate-button-${index+1}`, href='#') Edit Layer
-    button.btn.btn-primary.mb-1(style='width:17%;height:50px;float:Right') Run Layer
 
   .card.right-align
     .card-body 
       h5 Data Loading Settings
-      p hi
+      p Dataset: #{project.loading_training_data.dataset}
+      p Batch Size: #{project.loading_training_data.batch_size}
+      p Augment: #{project.loading_training_data.augment}
+      p Random Seed #{project.loading_training_data.random_seed}
+      p Valid Size: #{project.loading_training_data.valid_size}
+      p Shuffle: #{project.loading_training_data.shuffle}
 
   .card.right-align
     .card-body 
       h5 Data Training Settings
-      p More text for the new card
+      p Epochs: #{project.training_training_data.epoch}
+      p Dataset: #{project.training_training_data.dataset}
+      p Batch Size: #{project.training_training_data.batch_size}
+      p Learning Rate: #{project.training_training_data.learning_rate}
+      p Weight Decay: #{project.training_training_data.weight_decay}
+      p Optimizer: #{project.training_training_data.optimizer}
+      p Criterion: #{project.training_training_data.criterion}
+
     
+  button.btn.btn-primary.mb-1(style='width:17%;height:50px;float:Right') Run Layer
+  
   
 
 append scripts

@@ -1,6 +1,23 @@
 extends layout
 block content
-  body
-    p2 error
-    a.btn.btn-primary.mb-2(style = 'width:30%',href=`/login`) +
+    body
+      .row.justify-content-center(style = 'text-align:center')
+        .col-md-8
+          h1 Convolutional Neural Network Maker 
+          br
+          p2 A website desgined to help you create your own Convolutional Neural Networks without any coding! 
+          br
+          p2 Have fun!
+          br
+          p4 The intructions on how to use this are found at ____
+      br
+      .container
+        .row.justify-content-center
+          .col-md-4
+            .card(style = 'height:150%')
+              p3(style = 'text-align:center') Do you have an existing account?
+              a.btn3.btn-primary.btn-block(style='margin:auto;height:40px;width:30%', href = '/login') Log in 
+              p3(style = 'text-align:center') Create Account? 
+              a.btn3.btn-primary.btn-block(style ='margin:auto;height:40px;width:30%',href = '/signup') create
 
+            

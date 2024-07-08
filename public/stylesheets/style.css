@@ -24,6 +24,10 @@
   font-size: 16px;
 }
 
+.btn2:hover {
+  background-color: #383c3b;
+}
+
 .btn2::after {
   content: url('/images/icons8-dropdown-arrow-50.png'); /* Replace with your arrow image path */
   display: inline-block;
