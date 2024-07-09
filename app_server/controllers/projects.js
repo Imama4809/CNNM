@@ -116,16 +116,32 @@ const specific_project = async (req, res) => {
 
 
 const run_python_code = async (req, res) => {
-    const url = process.env.API_URL;
-    console.log(req.body)
-    const formData = { name: 'bob'};
+    console.log('hi')
+    const url_to_call_api = process.env.API_URL;
+    
     const function_key = process.env.FUNCTION_KEY
+
+    const url_to_handle_data = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid;
+    const headers = {
+        cookies: JSON.stringify(req.cookies)
+    }
     try {
-        const { default: got } = await import('got');
-        const response = await got.post(`${url}?code=${function_key}`, { json: formData });
+        const {default: got} = await import('got')
+        var project = await got(url_to_handle_data, {headers: headers})
+        project = JSON.parse(project.body)
+        const form_data = {
+            name: 'bob',
+            layers: req.body.selected_layer_data,
+            training: project.training_training_data,
+            loading: project.loading_training_data
+        };
+        console.log(form_data)
+        const response = await got.post(`${url_to_call_api}?code=${function_key}`, { json: form_data });
         console.log(response.body);
+        // res.render('viewproject')
+        res.render('index')
     } catch (err) {
-        console.log('error', err);
+        res.render('error')
     }
 };
 
