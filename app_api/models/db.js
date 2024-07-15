@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const dbURl = 'mongodb+srv://imamw7428:18OPmJRgB0yxUglf@cluster0.cggzxjr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/CNNM';
+const dbURl = 'mongodb+srv://imamw7428:' + process.env.MONGODB_URI + '@cluster0.cggzxjr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/CNNM';
 mongoose.connect(dbURl);
 const readLine = require('readline')
 

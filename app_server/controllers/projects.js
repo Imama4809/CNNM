@@ -4,7 +4,7 @@ const { stringify } = require('querystring');
 const { exec } = require('child_process');
 const path = require('path');
 var router = express.Router();
-require('dotenv').config()
+// require('dotenv').config()
 
 
 
@@ -138,6 +138,7 @@ const run_python_code = async (req, res) => {
         console.log(form_data)
         const response = await got.post(`${url_to_call_api}?code=${function_key}`, { json: form_data });
         console.log(response.body);
+
         // res.render('viewproject')
         res.render('index')
     } catch (err) {
