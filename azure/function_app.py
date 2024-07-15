@@ -5,25 +5,25 @@ import logging
 import numpy as np 
 import pymongo
 from pymongo import MongoClient
-print(pymongo.__version__)
-conn = MongoClient()
-conn = MongoClient('mongodb+srv://imamw7428:18OPmJRgB0yxUglf@cluster0.cggzxjr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/test', 4000)
-database = conn['test']
-collection = database['users']
-#connection
+# print(pymongo.__version__)
+# conn = MongoClient()
+# conn = MongoClient('mongodb+srv://imamw7428:18OPmJRgB0yxUglf@cluster0.cggzxjr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/test', 4000)
+# database = conn['test']
+# collection = database['users']
+# #connection
 
 
-specific_collection = collection.find({"username":"Bob"})
-#finding specific connection
+# specific_collection = collection.find({"username":"Bob"})
+# #finding specific connection
 
-updated_collection = specific_collection.clone()
-updated_collection[0]['projects'][0]['name'] = 'Project 2'
-print(updated_collection[0]['projects'][0]['name'])
+# updated_collection = specific_collection.clone()
+# updated_collection[0]['projects'][0]['name'] = 'Project 2'
+# print(updated_collection[0]['projects'][0]['name'])
 
-for val in updated_collection:
-    print(val)
+# for val in updated_collection:
+#     print(val)
 
-collection.update_one({"name":"Bob"},updated_collection)
+# collection.update_one({"name":"Bob"},updated_collection)
 
 
 #How to convert a pymongo.cursor.Cursor into a dict? 
@@ -131,8 +131,7 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     #training the data 
     model = createmodel(layers)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(),lr = 0.001,weight_decay=0.005)
-    scheduler = StepLR(optimizer,step_size = 1)
+    optimizer = optim.Adam(model.parameters(),lr = training.learning_rate,weight_decay=training.weight_decay)
     
     epochs = 0
 
@@ -140,10 +139,6 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
         print(f"epoch {epoch+1}")
         print(train_one_epoch(criterion,optimizer,model,train_data_loader))
     torch.save(model.state_dict(),'.\savemodel')
-
-
-
-
 
     
     if name:
