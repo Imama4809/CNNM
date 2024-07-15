@@ -28,6 +28,10 @@ dist
 # Local python packages
 .python_packages/
 
+# Datsets
+cifar-100-python/
+cifar-100-python.tar.gz
+
 # Python Environments
 .env
 .venv
