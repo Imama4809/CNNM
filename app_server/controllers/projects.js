@@ -22,6 +22,7 @@ const Projects = async (req,res) => {
 
         res.render('viewprojects',{
             userid: req.params.userid,
+            projectid: req.params.projectid,
             projects: projects});
     } catch (err) {
         res.render('error')
@@ -99,6 +100,7 @@ const specific_project = async (req, res) => {
         var layerlist = []
         layerlist[max_order] = 'lmao'
         res.render('viewproject', {
+            userid:req.params.userid,
             projectid: req.params.projectid,
             ids: [req.params.userid, req.params.projectid],
             project: project,
@@ -116,33 +118,46 @@ const specific_project = async (req, res) => {
 
 
 const run_python_code = async (req, res) => {
-    console.log('hi')
     const url_to_call_api = process.env.API_URL;
     
     const function_key = process.env.FUNCTION_KEY
 
+    const url_to_get_user = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid
     const url_to_handle_data = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid;
-    const headers = {
+    var headers = {
         cookies: JSON.stringify(req.cookies)
     }
     try {
         const {default: got} = await import('got')
-        var project = await got(url_to_handle_data, {headers: headers})
-        project = JSON.parse(project.body)
-        const form_data = {
-            name: 'bob',
-            layers: req.body.selected_layer_data,
-            training: project.training_training_data,
-            loading: project.loading_training_data
-        };
-        console.log(form_data)
-        const response = await got.post(`${url_to_call_api}?code=${function_key}`, { json: form_data });
-        console.log(response.body);
-
-        // res.render('viewproject')
-        res.render('index')
+        var user = await got(url_to_get_user, {headers: headers})
+        user = JSON.parse(user.body)
+        username = user.username
     } catch (err) {
         res.render('error')
+    }
+    if (!req.body.selected_layer_data){
+        res.render('error')
+    } else {
+        try {
+            const {default: got} = await import('got')
+            var project = await got(url_to_handle_data, {headers: headers})
+            project = JSON.parse(project.body)
+            console.log(project.training_training_data)
+            var form_data = {
+                username: username,
+                project_name: project.name,
+                layers: req.body.selected_layer_data,
+                training: project.training_training_data,
+                loading: project.loading_training_data
+            };
+            console.log(req.body.selected_layer_data)
+            const response = await got.post(`${url_to_call_api}?code=${function_key}`, { json: form_data });
+            console.log(response.body)
+            // res.render('viewproject')
+            res.render('index')
+        } catch (err) {
+            res.render('error')
+        }
     }
 };
 
@@ -170,6 +185,8 @@ const update_project = async (req,res) => {
     const { userid, projectid, layerid } = req.params;
     url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid
     const form_data = req.body;
+    form_data.what = 'change_settings'
+    //perhaps give this a better name later 
         if (form_data.shuffle == 'on') {
         form_data.shuffle = true
     } else if (!form_data.shuffle) {

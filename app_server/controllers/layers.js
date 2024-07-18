@@ -44,7 +44,7 @@ const specific_layer = async (req,res) => {
         layerid:req.params.layerid,
         layer:layer
       })
-    } catch (err) {
+    } catch (err) { 
       res.render('error')
     }
 }
@@ -53,6 +53,7 @@ const update_layer = async (req, res) => {
   const { userid, projectid, layerid } = req.params;
   url = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects/' + req.params.projectid + '/layers/' + req.params.layerid
   const form_data = req.body;
+  console.log(form_data)
   if (form_data._method == 'PUT') {
     try {
       const {default: got} = await import('got')
@@ -66,7 +67,7 @@ const update_layer = async (req, res) => {
       })
       res.redirect(`/${userid}/projects/${projectid}`)
     } catch (error) {
-      console.log('error',error.response)
+      // console.log('error',error.response)
       res.render('error')
       return res.status(400).json(error.response)
     }

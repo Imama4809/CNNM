@@ -16,7 +16,7 @@ router
     .post(ctrl_users.add_user)
 router
     .route('/:userid')
-    .get(ctrl_users.view_user)
+    .get(ctrl_authentication.verify_JWT,ctrl_users.view_user)
 router
     .route('/:userid/projects')
     .get(ctrl_authentication.verify_JWT,ctrl_projects.view_projects)
@@ -26,7 +26,7 @@ router
     .get(ctrl_authentication.verify_JWT,ctrl_layers.view_project)
     .post(ctrl_authentication.verify_JWT,ctrl_layers.create_layer)
     .delete(ctrl_authentication.verify_JWT,ctrl_projects.delete_project)
-    .put(ctrl_authentication.verify_JWT,ctrl_projects.update_project)
+    .put(ctrl_authentication.verify_JWT,ctrl_projects.updates)
 router
     .route('/:userid/projects/:projectid/layers/:layerid')
     .get(ctrl_authentication.verify_JWT,ctrl_layers.view_layer)

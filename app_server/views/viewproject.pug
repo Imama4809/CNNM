@@ -3,55 +3,66 @@ extends layout
 block content
   h2 #{project.name}
   h5 Press the arrow keys to move through the layers
-  form(method='POST')
-    input(type='hidden', name='selected_layer_data', id='selected_layer_data')
-    .owl-carousel(style='width: 800px; height: 400px; margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);')
-      each item, index in max_order_list
-        .item
-          .row
-            .col-md-12
-              .card
-                .card-body
-                  .dropdown(style='float:left')
-                    button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdownMenuButton${index}`, data-bs-toggle='dropdown', aria-expanded='false')
-                      | Choose layer #{item}
-                    ul.dropdown-menu(aria-labelledby=`dropdownMenuButton${index}`, style='max-height: 300%; overflow-y: scroll;')
-                      each layer in layers
-                        if layer.order == item
-                          li
-                            a.dropdown-item(href='#', data-order=item, data-layer=JSON.stringify(layer), onclick='handleClick(this)') #{layer.name}
-                  h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') sorry
-                  p.card-text(id=`card-text-main-${index + 1}`) 
+  .row(style = 'height:400px')
+    
+    form(method='POST')
+      input(type='hidden', name='selected_layer_data', id='selected_layer_data')
+      .owl-carousel(style='width: 800px; height: 400px; margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);')
+        each item, index in max_order_list
+          .item
+            .row
+              .col-md-12
+                .card
+                  .card-body
+                    .dropdown(style='float:left')
+                      button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdownMenuButton${index}`, data-bs-toggle='dropdown', aria-expanded='false')
+                        | Choose layer #{item}
+                      ul.dropdown-menu(aria-labelledby=`dropdownMenuButton${index}`, style='max-height: 300%; overflow-y: scroll;')
+                        each layer in layers
+                          if layer.order == item
+                            li
+                              a.dropdown-item(href='#', data-order=item, data-layer=JSON.stringify(layer), onclick='handleClick(this)') #{layer.name}
+                    h5.card-title(id=`card-title-${index + 1}`, style='margin:auto') sorry
+                    p.card-text(id=`card-text-main-${index + 1}`) 
+                      br
+                      | Note: The Edit Layer button will not work until you select a layer
+                    p.card-text(id=`card-text1-${index + 1}`,style='float:left') 
                     br
-                    | Note: The Edit Layer button will not work until you select a layer
-                  p.card-text(id=`card-text1-${index + 1}`,style='float:left') 
-                  br
-                  br
-                  br
-                  br
-                  a.btn3.btn-primary.mb-2(style='width:30%;float:Right', id=`navigate-button-${index+1}`, href='#') Edit Layer
-    button.btn.btn-primary.mb-1(style='width:17%;height:50px;float:Right') Run Layer
+                    br
+                    br
+                    br
+                    a.btn3.btn-primary.mb-2(style='width:30%;float:Right', id=`navigate-button-${index+1}`, href='#') Edit Layer
+      button.btn.btn-primary.mb-1(style='width:19%;height:30px;float:Right') Run Layer
+      br
+      br
+      br
+      br
+      .card.right-align
+        .card-body 
+          h5 Data Loading Settings
+          p Dataset: #{project.loading_training_data.dataset}
+          p Batch Size: #{project.loading_training_data.batch_size}
+          p Augment: #{project.loading_training_data.augment}
+          p Random Seed #{project.loading_training_data.random_seed}
+          p Valid Size: #{project.loading_training_data.valid_size}
+          p Shuffle: #{project.loading_training_data.shuffle}
+          h5 Data Training Settings
+          p Epochs: #{project.training_training_data.epoch}
+          p Dataset: #{project.training_training_data.dataset}
+          p Batch Size: #{project.training_training_data.batch_size}
+          p Learning Rate: #{project.training_training_data.learning_rate}
+          p Weight Decay: #{project.training_training_data.weight_decay}
+          p Optimizer: #{project.training_training_data.optimizer}
+          p Criterion: #{project.training_training_data.criterion}
+      
+      
+  .row(style = 'height:400px;width:80%')
+    a.btn.btn-primary.bm-1(style='width:17%;height:30px;float:Right',href = `/${userid}/projects/${projectid}/addlayer`) Add Layer
+    a.btn.btn-primary.bm-1(style='width:17%;height:30px;float:Right', href = `/${userid}/projects/${projectid}/updateproject`) Update Project
 
-  .card.right-align
-    .card-body 
-      h5 Data Loading Settings
-      p Dataset: #{project.loading_training_data.dataset}
-      p Batch Size: #{project.loading_training_data.batch_size}
-      p Augment: #{project.loading_training_data.augment}
-      p Random Seed #{project.loading_training_data.random_seed}
-      p Valid Size: #{project.loading_training_data.valid_size}
-      p Shuffle: #{project.loading_training_data.shuffle}
+  
 
-  .card.right-align
-    .card-body 
-      h5 Data Training Settings
-      p Epochs: #{project.training_training_data.epoch}
-      p Dataset: #{project.training_training_data.dataset}
-      p Batch Size: #{project.training_training_data.batch_size}
-      p Learning Rate: #{project.training_training_data.learning_rate}
-      p Weight Decay: #{project.training_training_data.weight_decay}
-      p Optimizer: #{project.training_training_data.optimizer}
-      p Criterion: #{project.training_training_data.criterion}
+  
 
     
   

@@ -14,6 +14,10 @@ const verify_JWT = async (req,res,next) => {
 
     const access_token = cookies.jwt_access
     const refresh_token = cookies.jwt_refresh
+    if (!refresh_token){
+        return res.status(403).json("denied")
+    }
+
     var specific_user = await users.findById(req.params.userid)
     if (!specific_user) {
         return res.status(404).json({"message":"not found"})

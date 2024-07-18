@@ -106,12 +106,12 @@ const delete_project = async (req,res) => {
 //not sure if following are being called anymore, investigate further 
 
 const updates = async (req,res) =>{
-    switch (req.body.where){
-        case ('project'):
-            await update_in_project(req,res)
+    switch (req.body.what){
+        case ('change_settings'):
+            await update_settings_project(req,res)
             break
-        case ('layer'):
-            await update_out_layer(req,res)
+        case ('change_file'):
+            await update_file_project(req,res)
             break
         default:
             return res.status(400).json({"message":"not valid"})
@@ -120,8 +120,29 @@ const updates = async (req,res) =>{
 
 
 
-const update_project = async (req,res) => {
+const update_file_project = async (req,res) => {
     try {
+        const user = await users.findById(req.params.userid)
+        if (!user) {
+            return res.status(404).json({"message":"user not found "})
+        }
+        const this_project = await user.projects.find(project => project._id == req.params.projectid)
+        if (!this_project) {
+            return res.status(404).json({"message":"project not found "})
+        }
+        this_project.saved_file = req.body.saved_file
+        await user.save()
+        return res.status(201).json(thisproject)
+    }catch (err) {
+        return res.status(500).json(err)
+    }
+}
+
+
+
+const update_settings_project = async (req,res) => {
+    try {
+        console.log(req.body.what)
         const user = await users.findById(req.params.userid)
         if (!user) {
             return res.status(404).json({"message":"user not found"})
@@ -161,6 +182,6 @@ module.exports = {
     create_project,
     delete_project,
     view_projects,
-    update_project,
+    update_file_project,
     updates
 }

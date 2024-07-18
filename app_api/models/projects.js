@@ -127,6 +127,7 @@ const project_schema = new mongoose.Schema({
     training_training_data: {
         type: training_training_data_schema
     },
+    saved_file: String,
     max_order: Number
 });
 

@@ -256,6 +256,7 @@ const update_layer = async (req,res) => {
         thislayer.sub_layer = req.body.sub_layer
         switch (req.body.sub_layer){
             case ('Convolutional Layer'):
+                thislayer.conv_layer = {}
                 thislayer.conv_layer.input_depth = req.body.input_depth
                 thislayer.conv_layer.output_depth =  req.body.output_depth
                 thislayer.conv_layer.kernal_size = req.body.kernal_size
@@ -265,12 +266,16 @@ const update_layer = async (req,res) => {
                 thislayer.conv_layer.activation_function = req.body.activation_function
                 break
             case('Linear Layer'):
+                thislayer.lin_layer = {}
                 thislayer.lin_layer.input_depth = req.body.input_depth
                 thislayer.lin_layer.neurons = req.body.neurons
                 break
             case('Pooling Layer'):
+                thislayer.pool_layer = {}
                 thislayer.pool_layer.pooling_kernal_size = req.body.pooling_kernal_size
+                thislayer.pool_layer.pooling_stride = req.body.pooling_stride
                 thislayer.pool_layer.pooling_padding = req.body.pooling_padding
+
                 break
             case('Activation Function'):
                 thislayer.activation_function = req.body.activation_function
@@ -285,7 +290,7 @@ const update_layer = async (req,res) => {
                 return res.status(400).json({"message":"not a valid sub layer"})
         }
         await user.save()
-        return res.status(201).json(thislayer)
+        return res.status(201).json("complete")
     }catch (err) {
         return res.status(400).json(err)
     }
