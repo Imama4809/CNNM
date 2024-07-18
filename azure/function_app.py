@@ -7,7 +7,7 @@ import pymongo
 from pymongo import MongoClient
 # print(pymongo.__version__)
 # conn = MongoClient()
-# conn = MongoClient('mongodb+srv://imamw7428:18OPmJRgB0yxUglf@cluster0.cggzxjr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/test', 4000)
+# conn = MongoClient('mongodb+srv://imamw7428:@cluster0.cggzxjr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/test', 4000)
 # database = conn['test']
 # collection = database['users']
 # #connection
