@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('dotenv').config()
 
 const dbURl = 'mongodb+srv://imamw7428:' + process.env.MONGODB_URI + '@cluster0.cggzxjr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/CNNM';
 mongoose.connect(dbURl);
@@ -43,3 +44,6 @@ process.on('SIGTERM', async () => {
 require('./projects');  // Ensure this file exists and is error-free
 
 console.log("Starting the application...");
+
+
+//this was created with the help of ChatGPT

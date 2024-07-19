@@ -4,7 +4,7 @@ const { stringify } = require('querystring');
 const { exec } = require('child_process');
 const path = require('path');
 var router = express.Router();
-// require('dotenv').config()
+require('dotenv').config()
 
 
 
@@ -142,7 +142,6 @@ const run_python_code = async (req, res) => {
             const {default: got} = await import('got')
             var project = await got(url_to_handle_data, {headers: headers})
             project = JSON.parse(project.body)
-            console.log(project.training_training_data)
             var form_data = {
                 username: username,
                 project_name: project.name,
@@ -150,8 +149,7 @@ const run_python_code = async (req, res) => {
                 training: project.training_training_data,
                 loading: project.loading_training_data
             };
-            console.log(req.body.selected_layer_data)
-            const response = await got.post(`${url_to_call_api}?code=${function_key}`, { json: form_data });
+            const response = await got.post(process.env.FUNCTION_URL, {json: form_data});
             console.log(response.body)
             // res.render('viewproject')
             res.render('index')

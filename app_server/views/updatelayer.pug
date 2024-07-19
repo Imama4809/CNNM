@@ -9,7 +9,7 @@ block content
           form(method='POST', onsubmit='return validateForm()')
             input(type='hidden', name='_method', value='PUT') 
             .checkbox-container(style='display:flex;flex-wrap:wrap')
-              each layer in ['Convoluational Layer', 'Linear Layer', 'Pooling Layer', 'Activation Function','Batch Norm' ,'Dropout']
+              each layer in ['Convolutional Layer', 'Linear Layer', 'Pooling Layer', 'Activation Function','Batch Norm' ,'Dropout']
                 .form-check.form-check-inline
                   input.form-check-input(type='checkbox', id=`${layer}`, name='sub_layer',value = `${layer}`, onchange='handleCheckboxChange(this)')
                   label.form-check-label(for=`${layer}`) #{layer}
@@ -48,7 +48,7 @@ append scripts
       // Update the content based on the selected checkbox
       if (checkbox.checked) {
         switch (checkbox.id) {
-          case 'Convoluational Layer':
+          case 'Convolutional Layer':
             container.innerHTML = `
               <div class="mb-3">
                 <label for="input_depth" class="form-label">Input Depth</label>
@@ -159,5 +159,4 @@ append scripts
 
       return true;  // All fields are filled
     }
-
 

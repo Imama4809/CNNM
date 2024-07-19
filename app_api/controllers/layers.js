@@ -254,6 +254,7 @@ const update_layer = async (req,res) => {
                 return res.status(400).json({"message":"not a valid sub layer"})
         }
         thislayer.sub_layer = req.body.sub_layer
+        console.log('hi')
         switch (req.body.sub_layer){
             case ('Convolutional Layer'):
                 thislayer.conv_layer = {}
