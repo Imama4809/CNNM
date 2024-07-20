@@ -4,7 +4,7 @@ const { stringify } = require('querystring');
 const { exec } = require('child_process');
 const path = require('path');
 var router = express.Router();
-require('dotenv').config()
+// require('dotenv').config()
 
 
 
