@@ -60,7 +60,7 @@ block content
     a.btn.btn-primary.bm-1(style='width:17%;height:30px;float:Right', href = `/${userid}/projects/${projectid}/updateproject`) Update Project
     .card(style ='width:40%;height:80px')
       p The model is updated after each epoch; we are currently on epoch {insert epoch}. Hit the following button to download the latest version of the model
-    a.btn.btn-primary.bm-1(style='width:17%;height:30px;float:Right') Download
+    button.btn.btn-primary.bm-1(style='width:17%;height:30px;float:Right', onclick = 'download()') Download
 
   
 
@@ -78,6 +78,7 @@ append scripts
     var userid = ids[0] 
     var projectid = ids[1]
     var basescript = `/${userid}/projects/${projectid}`
+    var saved_data = ids[2]
 
     const clicked = () => {
       console.log('hi') 
@@ -144,5 +145,19 @@ append scripts
       selected_layer_data[order] = layer; // Store selected layer data based on order
       update(order, layer); // Update UI
     };
+    const download = () => {
+      if (!saved_data){
+        alert("No data is saved")
+      } else {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(saved_data));
+        element.setAttribute('download', 'model.txt');
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        //- console.log(saved_data)
+      }
+    }
 
 

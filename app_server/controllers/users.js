@@ -5,6 +5,7 @@ var router = express.Router();
 
 // Define a route for the home page
 login_user_page = (req, res, )  => {
+    console.log('hi')
     console.log(req.protocol + '://' + req.get('host'))
     res.render('loginuser');
 };

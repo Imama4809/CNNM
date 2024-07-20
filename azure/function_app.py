@@ -36,21 +36,12 @@ def update_database(username,project_name,pickled_data):
     #finding general user
 
     data = specific_project[0]['projects'][0]
-    # How to convert a pymongo.cursor.Cursor into a dict? 
-    # https://stackoverflow.com/questions/28968660/how-to-convert-a-pymongo-cursor-cursor-into-a-dict
-    #by: Sede
-    #under license CC BY SA 
-    #used the fact that it was a list and used [0] instead of the for loop
+
 
     data['saved_data'] = pickled_data
     #updating the data 
 
     all_projects = document[0]['projects']
-    # How to convert a pymongo.cursor.Cursor into a dict? 
-    # https://stackoverflow.com/questions/28968660/how-to-convert-a-pymongo-cursor-cursor-into-a-dict
-    #by: Sede
-    #under license CC BY SA 
-    #used the fact that it was a list and used indexing instead of the for loop
 
     for i,val in enumerate(all_projects):
         if (val['name'] == data['name']):
@@ -59,11 +50,6 @@ def update_database(username,project_name,pickled_data):
 
     query = {"username":username,'projects.name': project_name}
     change = {'$set': {'projects':all_projects}}
-    #Updating an object inside an array with PyMongo
-    #https://stackoverflow.com/questions/28828825/updating-an-object-inside-an-array-with-pymongo
-    #By: Neil Lunn
-    #under license CC BY SA 
-    #edited it to suit my variables and used differnt function 
     collection.update_one(query,change)
 
 
@@ -168,7 +154,7 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
             print(f"epoch {epoch+1}")
             train_one_epoch(criterion,optimizer,model,train_data_loader)
             print("completed")
-            data = pickle.dumps(model)
+            data = pickle.dumps(model.state_dict())
             value = pickle.loads(data)
             update_database(str(username),str(project_name),data)
         

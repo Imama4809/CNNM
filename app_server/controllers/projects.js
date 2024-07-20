@@ -99,11 +99,13 @@ const specific_project = async (req, res) => {
         }
         var layerlist = []
         layerlist[max_order] = 'lmao'
+        console.log(project.saved_data)
         res.render('viewproject', {
             userid:req.params.userid,
             projectid: req.params.projectid,
-            ids: [req.params.userid, req.params.projectid],
+            ids: [req.params.userid, req.params.projectid,project.saved_data],
             project: project,
+            saved_data: project.saved_data,
             max_order_list: max_order_list,
             max_order: max_order,
             layers: layers,
