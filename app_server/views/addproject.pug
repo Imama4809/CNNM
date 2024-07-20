@@ -77,13 +77,24 @@ append scripts
         return false;
       }
       const dataset = document.getElementById('dataset').value
-      console.log(['MNIST'].indexOf(dataset) )
       if (!dataset) {
         alert('Please fill out all general information fields.');
         return false;
       }
       if (['MNIST'].indexOf(dataset) === -1){
         alert('Not a valid dataset')
+        return false
+      }
+      
+      const optimizer = document.getElementById('optimizer').value
+      console.log(optimizer)
+      if (['Adam'].indexOf(optimizer) === -1){
+        alert('Not a valid optimizer')
+        return false
+      }
+      const criterion = document.getElementById('criterion').value
+      if (['CrossEntropyLoss'].indexOf(criterion) === -1){
+        alert('Not a valid criterion')
         return false
       }
       const loading_info = document.querySelectorAll('#loading-info input')
