@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-require('dotenv').config()
+// require('dotenv').config()
 
 const dbURl = 'mongodb+srv://imamw7428:' + process.env.MONGODB_URI + '@cluster0.cggzxjr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/CNNM';
 mongoose.connect(dbURl);
