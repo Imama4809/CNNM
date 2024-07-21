@@ -33,7 +33,6 @@ const create_layer = async (req,res) => {
         }
         //create if statements and use parameters which are not going to be sent into the database to determine what the layer will look like 
         const thislayer = thisproject.layers.find(layer => layer.name == req.body.name)
-        console.log(thislayer)
         if (thislayer !== undefined) {
             return res.status(400).json({"message":"you can not create a layer with the same name as another"})
         }
@@ -144,17 +143,17 @@ const which_type_of_layer = (req,res) => {
         layer_to_add = {
             name: req.body.name,
             sub_layer: req.body.sub_layer,
-            batch_norm: req.body.Batch_norm,
+            batch_norm: req.body.batch_norm,
             prev_layer: req.body.prev_layer,
             order: req.body.order
         }
         return layer_to_add
     }
-    else if (req.body.sub_layer == 'Dropout '){
+    else if (req.body.sub_layer == 'Dropout'){
         layer_to_add = {
             name: req.body.name,
             sub_layer: req.body.sub_layer,
-            dropout: req.params.dropout,
+            dropout: req.body.dropout,
             prev_layer: req.body.prev_layer,
             order: req.body.order
         } 

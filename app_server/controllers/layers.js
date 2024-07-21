@@ -9,7 +9,8 @@ var router = express.Router();
 const add_layer = async (req, res) => {
     const { userid, projectid } = req.params;
     const form_data = req.body;
-    
+    console.log('hi from server')
+    console.log(req.body)
     try {
       const headers = {
           cookies : JSON.stringify(req.cookies)

@@ -42,6 +42,9 @@ block content
           .card-body           
             .training-container(id = 'training-info')
               h2 Training Info
+              p2 Note: Only available Optimizers are: Adam 
+              br
+              p2 Note: Only available Criterions are: CrossEntropyLoss
               .mb-3
                 label.form-label(for='epoch') Epoch
                 input.form-control(type='Number', id='epoch', name='epoch')
@@ -87,7 +90,6 @@ append scripts
       }
       
       const optimizer = document.getElementById('optimizer').value
-      console.log(optimizer)
       if (['Adam'].indexOf(optimizer) === -1){
         alert('Not a valid optimizer')
         return false

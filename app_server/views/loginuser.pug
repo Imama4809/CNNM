@@ -7,7 +7,7 @@ block content
                 .col-md-4
                     .card
                         h2.text-center Login
-                        form(method='POST')
+                        form(method='POST' onsubmit = 'return check()')
                             .form-group.mx-3
                                 label(for='username') Username
                                 input#username.form-control(type='text',name='username', required)
@@ -15,9 +15,25 @@ block content
                                 label(for='password') Password
                                 input#password.form-control(type='password',name='password', required)
                             .d-flex.justify-content-center
-                                button.btn_signup_login.btn-primary.btn-block(style='margin-top:auto;', type='submit') Submit
+                                button.btn_signup_login.btn-primary.btn-block(style='margin-top:auto;',type='submit') Submit
                         p2(style = 'text-align: center') Don't have an account? 
                         a.button(style = 'text-align:center', href = '/signup') sign up
 
 
 //- this was created with the help of ChatGPT
+append scripts
+  script.
+    var users = !{JSON.stringify(users)};
+    console.log(users)
+    
+    const check = () => {
+        const username = document.getElementById('username').value
+        if (!username) {
+            alert('Please fill out all general information fields.');
+            return false;
+        }
+        if (users.indexOf(username) === -1){
+            alert("not a valid username, please hit sign up and create an account")
+            return false
+        }
+    }

@@ -10,6 +10,7 @@ const ctrl_authentication = require('../controllers/authentication')
 
 router
     .route('/login')
+    .get(ctrl_users.get_users)
     .post(ctrl_users.login_user)
 router
     .route('/signup')

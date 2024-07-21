@@ -13,6 +13,17 @@ const jwt = require('jsonwebtoken');
 //delete_user
 //update_user
 
+
+const get_users = async (req,res) => {
+    try {
+        const usernames = await users.aggregate([{"$group": {  "_id": null,  "usernames": {"$push": "$username" }},}, ])
+        list_of_usernames = usernames[0].usernames
+        return res.status(200).json(list_of_usernames)
+    } catch (err) {
+        return res.status(400).json(err)
+    }
+}
+
 const view_user = async (req,res) => {
     try {
         specific_user = await users.find({"_id": req.params.userid})
@@ -29,7 +40,12 @@ const login_user = async (req,res) => {
     try {
         specific_user = await users.find({"username":req.body.username})
         if (specific_user.length == 0) {
-            return res.status(400).json({"message":"username does not exist"})
+            const message = {
+                worked : false,
+                code: 400,
+                message:"username does not exist"
+            }
+            return res.status(400).json({"message":"invalid username"})
         }
         specific_user = specific_user[0]
         const match = await bcrypt.compare(req.body.password,specific_user.encripted_password)
@@ -99,6 +115,7 @@ const add_user = async (req,res) => {
 }
 
 module.exports = {
+    get_users,
     view_user,
     login_user,
     add_user

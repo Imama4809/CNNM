@@ -4,9 +4,9 @@ block content
   h2 #{project.name}
   h5 Press the arrow keys to move through the layers
   .row(style = 'height:300px')
-    form(method='POST')
+    form(method='POST', onsubmit = "return check_layers()")
       input(type='hidden', name='selected_layer_data', id='selected_layer_data')
-      .owl-carousel(style='width: 800px; height: 400px; margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);')
+      .owl-carousel(style='width: 800px; height: 300px; margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);')
         each item, index in max_order_list
           .item
             .row
@@ -36,7 +36,7 @@ block content
       br
       br
       br
-      .card.right-align(style = 'width:20%')
+      .card.right-align()
         .card-body 
           h5 Data Loading Settings
           p Dataset: #{project.loading_training_data.dataset}
@@ -45,6 +45,8 @@ block content
           p Random Seed #{project.loading_training_data.random_seed}
           p Valid Size: #{project.loading_training_data.valid_size}
           p Shuffle: #{project.loading_training_data.shuffle}
+      .card.right-align(style = 'width:20%')
+        .card-body 
           h5 Data Training Settings
           p Epochs: #{project.training_training_data.epoch}
           p Dataset: #{project.training_training_data.dataset}
@@ -54,12 +56,14 @@ block content
           p Optimizer: #{project.training_training_data.optimizer}
           p Criterion: #{project.training_training_data.criterion}
       
-      
-    a.btn.btn-primary.bm-1(style='width:17%;height:30px;float:Right', href = `/${userid}/projects/${projectid}/addlayer`) Add Layer
-    a.btn.btn-primary.bm-1(style='width:17%;height:30px;float:Right', href = `/${userid}/projects/${projectid}/updateproject`) Update Project
+  br
+  br
+  .row(style = "width:80%")
+    a.btn.btn-primary.bm-1(style='width:20%;height:30px;float:left', href = `/${userid}/projects/${projectid}/addlayer`) Add Layer
+    a.btn.btn-primary.bm-1(style='width:20%;height:30px;float:left', href = `/${userid}/projects/${projectid}/updateproject`) Update Project
+    button.btn.btn-primary.bm-1(style='width:20%;height:30px;float:Right', onclick = 'download()') Download
     .card(style ='width:40%;height:80px')
       p The model is updated after each epoch; we are currently on epoch {insert epoch}. Hit the following button to download the latest version of the model
-    button.btn.btn-primary.bm-1(style='width:17%;height:30px;float:Right', onclick = 'download()') Download
 
   
 
@@ -157,6 +161,13 @@ append scripts
         document.body.removeChild(element);
         //- console.log(saved_data)
       }
+    }
+    const check_layers = () => {
+      if (JSON.stringify(selected_layer_data) === '{}') {
+        alert("please create or select at least one layer")
+        return false
+      }
+      return true
     }
 
 

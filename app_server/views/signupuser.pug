@@ -7,7 +7,7 @@ block content
                 .col-md-4
                     .card
                         h2.text-center Sign up
-                        form(method='POST')
+                        form(method='POST',onsubmit = 'return check()')
                             .form-group.mx-3
                                 label(for='username') Username
                                 input#username.form-control(type='text' name='username' required)
@@ -16,14 +16,36 @@ block content
                                 input#email.form-control(type='text' name='email' required)
                             .form-group.mx-3
                                 label(for='password') Password
-                                input#password.form-control(type='password' name='password' required)
+                                input#password.form-control(type='password', name='password' required)
                             .form-group.mx-3
                                 label(for='retyped_password') Please Retype Your Password
-                                input#password.form-control(type='password' name='retyped_password' required)
+                                input#retyped_password.form-control(type='password' name='retyped_password' required)
                             .d-flex.justify-content-center
                                 button.btn_signup_login.btn-primary.btn-block( type='submit') Submit
                         p2(style = 'text-align: center') Already have an account? 
                         a.button(style = 'text-align:center', href = '/login') log in 
 
 
-
+append scripts
+  script.
+    var users = !{JSON.stringify(users)};
+    console.log(users)
+    
+    const check = () => {
+        const username = document.getElementById('username').value
+        if (!username) {
+            alert('Please fill out all general information fields.');
+            return false;
+        }
+        const password = document.getElementById('password').value
+        const retyped_password = document.getElementById('retyped_password').value
+        if (retyped_password !== password){
+            alert("passwords do not match")
+            return false
+        }
+        if (users.indexOf(username) !== -1){
+            alert("sorry this username already exists, please use another one ")
+            return false
+        }
+        return true 
+    }

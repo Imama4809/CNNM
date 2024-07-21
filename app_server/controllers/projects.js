@@ -15,12 +15,17 @@ const Projects = async (req,res) => {
         const headers = {
             cookies : JSON.stringify(req.cookies)
         };
-        url_to_access_webpage = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects'
         const {default: got} = await import('got')
+        url_to_get_username = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid
+        const response_for_username = await got(url_to_get_username, {headers: headers})
+        const response = JSON.parse(response_for_username.body)
+
+        url_to_access_webpage = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects'
         const response_for_webpage = await got(url_to_access_webpage, {headers: headers});
         const projects = JSON.parse(response_for_webpage.body)
-
+        console.log(response_for_username.statusCode, response_for_username.statusMessage)
         res.render('viewprojects',{
+            username: response.username,
             userid: req.params.userid,
             projectid: req.params.projectid,
             projects: projects});
