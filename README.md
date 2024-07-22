@@ -4,6 +4,6 @@ This is a project designed to help people make Convolutional Neural Networks onl
 This website requires some understanding of the concepts needed to build a machine learning layer- or you could just input random things and have fun with it!
 
 ---
-Website Link: ([https:](https://cnnm-09fd.onrender.com))
+Website Link: ([cnnm-09fd.onrender.com](https://cnnm-09fd.onrender.com))
 
 
