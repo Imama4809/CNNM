@@ -62,8 +62,9 @@ block content
     a.btn.btn-primary.bm-1(style='width:20%;height:30px;float:left', href = `/${userid}/projects/${projectid}/addlayer`) Add Layer
     a.btn.btn-primary.bm-1(style='width:20%;height:30px;float:left', href = `/${userid}/projects/${projectid}/updateproject`) Update Project
     button.btn.btn-primary.bm-1(style='width:20%;height:30px;float:Right', onclick = 'download()') Download
-    .card(style ='width:40%;height:80px')
-      p The model is updated after each epoch; we are currently on epoch {insert epoch}. Hit the following button to download the latest version of the model
+
+    .card(style ='width:40%')
+      p The model is updated after each epoch. Hit the following button to download the latest version of the model you have trained! If an alert still pops up when you hit download, it may be that your model is still training!
 
   
 
