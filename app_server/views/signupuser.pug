@@ -30,7 +30,7 @@ append scripts
   script.
     var users = !{JSON.stringify(users)};
     console.log(users)
-    
+    var already_clicked = false
     const check = () => {
         const username = document.getElementById('username').value
         if (!username) {
@@ -47,5 +47,10 @@ append scripts
             alert("sorry this username already exists, please use another one ")
             return false
         }
+        if (already_clicked) {
+            return false
+        }
+        already_clicked = true 
+        
         return true 
     }
