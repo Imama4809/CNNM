@@ -6,7 +6,7 @@ block content
   .row(style = 'height:300px')
     form(method='POST', onsubmit = "return check_layers()")
       input(type='hidden', name='selected_layer_data', id='selected_layer_data')
-      .owl-carousel(style='width: 800px; height: 300px; margin: 0; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%);')
+      .owl-carousel(style='width: 800px; height: 300px; margin: 0; position: absolute;  ')
         each item, index in max_order_list
           .item
             .row
@@ -16,7 +16,7 @@ block content
                     .dropdown(style='float:left')
                       button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdownMenuButton${index}`, data-bs-toggle='dropdown', aria-expanded='false')
                         | Choose layer #{item}
-                      ul.dropdown-menu(aria-labelledby=`dropdownMenuButton${index}`, style='max-height: 300%; overflow-y: scroll;')
+                      ul.dropdown-menu(aria-labelledby=`dropdownMenuButton${index}`, style='max-height: 100%; overflow-y: scroll;')
                         each layer in layers
                           if layer.order == item
                             li
@@ -36,8 +36,8 @@ block content
       br
       br
       br
-      .card.right-align()
-        .card-body 
+      .card.right-align(style = 'width:20%')
+        .card-body
           h5 Data Loading Settings
           p Dataset: #{project.loading_training_data.dataset}
           p Batch Size: #{project.loading_training_data.batch_size}
@@ -65,6 +65,7 @@ block content
 
     .card(style ='width:40%')
       p The model is updated after each epoch. Hit the following button to download the latest version of the model you have trained! If an alert still pops up when you hit download, it may be that your model is still training!
+      p In order to get the model, once you download the file, you need to use the base64 module to decode it and then searlize it using the pickle.loads() from the pickle module
 
   
 
