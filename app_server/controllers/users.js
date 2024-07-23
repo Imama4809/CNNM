@@ -42,9 +42,10 @@ signup_user_page = async (req,res) =>  {
     try {
         const {default: got} = await import('got')
         const response = await got(url)
-        const users = JSON.parse(response.body)
+        const users_and_emails = JSON.parse(response.body)
         res.render('signupuser', {
-            users: users
+            users: users_and_emails[0],
+            emails: users_and_emails[1]
         })
     } catch (err) {
         res.render('error')

@@ -14,11 +14,15 @@ const jwt = require('jsonwebtoken');
 //update_user
 
 
-const get_users = async (req,res) => {
+const get_users_and_emails = async (req,res) => {
     try {
         const usernames = await users.aggregate([{"$group": {  "_id": null,  "usernames": {"$push": "$username" }},}, ])
         list_of_usernames = usernames[0].usernames
-        return res.status(200).json(list_of_usernames)
+        const emails = await users.aggregate([{"$group": {  "_id": null,  "emails": {"$push": "$email" }},}, ])
+        list_of_emails = emails[0].emails
+        lis = [list_of_usernames,list_of_emails]
+        // console.log(list_of_emails)
+        return res.status(200).json(lis)
     } catch (err) {
         return res.status(400).json(err)
     }
@@ -115,7 +119,7 @@ const add_user = async (req,res) => {
 }
 
 module.exports = {
-    get_users,
+    get_users_and_emails,
     view_user,
     login_user,
     add_user

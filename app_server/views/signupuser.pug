@@ -29,10 +29,12 @@ block content
 append scripts
   script.
     var users = !{JSON.stringify(users)};
+    var emails = !{JSON.stringify(emails)};
     console.log(users)
     var already_clicked = false
     const check = () => {
         const username = document.getElementById('username').value
+        const email = document.getElementById('email').value
         if (!username) {
             alert('Please fill out all general information fields.');
             return false;
@@ -47,10 +49,13 @@ append scripts
             alert("sorry this username already exists, please use another one ")
             return false
         }
+        if (emails.indexOf(email) !== -1){
+            alert("sorry this email is already in use")
+            return false 
+        }
         if (already_clicked) {
             return false
         }
         already_clicked = true 
-        
         return true 
     }
