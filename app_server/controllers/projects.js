@@ -11,19 +11,17 @@ var router = express.Router();
 //functions will get passed to the verification function and thats why headers include an authorization section
 
 const Projects = async (req,res) => {
+    const headers = {
+        cookies : JSON.stringify(req.cookies)
+    };
     try {
-        const headers = {
-            cookies : JSON.stringify(req.cookies)
-        };
         const {default: got} = await import('got')
         url_to_get_username = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid
         const response_for_username = await got(url_to_get_username, {headers: headers})
         const response = JSON.parse(response_for_username.body)
-
         url_to_access_webpage = req.protocol + '://' + req.get('host') + '/api/' + req.params.userid + '/projects'
         const response_for_webpage = await got(url_to_access_webpage, {headers: headers});
         const projects = JSON.parse(response_for_webpage.body)
-        console.log(response_for_username.statusCode, response_for_username.statusMessage)
         res.render('viewprojects',{
             username: response.username,
             userid: req.params.userid,
@@ -32,6 +30,7 @@ const Projects = async (req,res) => {
     } catch (err) {
         res.render('error')
     }
+    
 };
 
 
@@ -43,7 +42,15 @@ const view_add_project_page = async (req,res) => {
         };
         const {default: got} = await import('got')
         const response = await got(url,{headers: headers})
-        res.render('addproject')
+        const projects = JSON.parse(response.body)
+        var namelist = []
+        for (const proj in projects) {
+            namelist.push(projects[proj].name)
+        }
+
+        res.render('addproject', {
+            project_names: namelist
+        })
     } catch (error) {
         res.render('error')
     }

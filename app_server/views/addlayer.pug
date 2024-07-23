@@ -18,7 +18,7 @@ block content
               // Add general form fields here
               .mb-3
                 label.form-label(for='name') Layer Name
-                input.form-control(type='text', id='name', name='name')
+                input.form-control(type='text', id='layername', name='name')
               .mb-3
                 label.form-label(for='order') Layer Order 
                 p (will this be the first layer the data is passed through, the second?)
@@ -32,12 +32,15 @@ block content
 
 append scripts
   script.
+    
+
+
+
     function handleCheckboxChange(checkbox) {
       const checkboxes = document.getElementsByName('sub_layer');
       checkboxes.forEach(cb => {
         if (cb !== checkbox) cb.checked = false;
       });
-      console.log(checkbox.id)
       // Call function to update the specific container based on the selected checkbox
       updateSpecificContainer(checkbox);
       
@@ -133,14 +136,13 @@ append scripts
 
     function validateForm() {
       // Validate general container inputs
+      const layer_names = !{JSON.stringify(layer_names)};
       const layername = document.getElementById('layername').value;
       const order = document.getElementById('order').value;
-
       if (!layername || !order) {
         alert('Please fill out all general information fields.');
         return false;
       }
-
       // Validate specific container inputs
       const specificInputs = document.querySelectorAll('#specific-container input');
       for (let input of specificInputs) {
@@ -149,14 +151,16 @@ append scripts
           return false;
         }
       }
-
       // Check if at least one checkbox is selected
       const checkboxes = document.getElementsByName('sub_layer');
       const isChecked = Array.from(checkboxes).some(cb => cb.checked);
-
       if (!isChecked) {
         alert('Please select at least one checkbox.');
         return false;
+      }
+      if (layer_names.indexOf(layername)!== -1){
+        alert('Layer name is already in use! Please pick another one.')
+        return false
       }
       return true;  // All fields are filled
     }

@@ -101,13 +101,23 @@ const view_add_layer_page = async (req,res) => {
           cookies : JSON.stringify(req.cookies)
       };
       const response = await got(url, {headers:headers})
+      const project = JSON.parse(response.body)
+      const layers = project.layers
+      var layer_names = []
+      for (const layer in layers) {
+        console.log(layers[layer])
+        layer_names.push(layers[layer].name)
+      }
+      res.render('addlayer',{
+        userid: req.params.userid,
+        layer_names:layer_names
+  
+      });
     } catch {
       res.render('error')
     }
 
-    res.render('addlayer',
-        {userid: req.params.userid}
-      );
+    
 };
 
 module.exports = {

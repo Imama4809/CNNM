@@ -3,6 +3,9 @@ extends layout
 block content
   h2 Add Project
   form(method='POST', onsubmit='return validateForm()')
+    input(type='hidden', name='dataset', id='dataset')
+    input(type='hidden', name='optimizer', id='optimizer')
+    input(type='hidden', name='criterion', id='criterion')
     .row
       .col-md-4
         .card
@@ -14,8 +17,11 @@ block content
                 label.form-label(for='project_name') Project Name
                 input.form-control(type='text', id='name', name='name')
               .mb-3
-                label.form-label(for='dataset') Dataset 
-                input.form-control(type='text', id='dataset', name='dataset')
+                button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdown_menu_dataset`, data-bs-toggle='dropdown', aria-expanded='false')
+                  | Choose dataset 
+                ul.dropdown-menu(aria-labelledby=`dropdown_menu_dataset`, style='max-height: 100%; overflow-y: scroll;')
+                  li
+                    a.dropdown-item(href='#', onclick='update_dataset("MNIST")') MNIST
               .mb-3
       .col-md-4
         .card
@@ -49,11 +55,17 @@ block content
                 label.form-label(for='epoch') Epoch
                 input.form-control(type='Number', id='epoch', name='epoch')
               .mb-3
-                label.form-label(for='optimizer') Optimizer
-                input.form-control(type='text', id='optimizer', name='optimizer')
+                button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdown_menu_optimizer`, data-bs-toggle='dropdown', aria-expanded='false')
+                  | Choose optimizer 
+                ul.dropdown-menu(aria-labelledby=`dropdown_menu_optimizer`, style='max-height: 100%; overflow-y: scroll;')
+                  li
+                    a.dropdown-item(href='#', onclick='update_optimizer("Adam")') Adam
               .mb-3
-                label.form-label(for='criterion') Criterion
-                input.form-control(type='text', id='criterion', name='criterion')
+                button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdown_menu_criterion`, data-bs-toggle='dropdown', aria-expanded='false')
+                  | Choose Criterion 
+                ul.dropdown-menu(aria-labelledby=`dropdown_menu_criterion`, style='max-height: 100%; overflow-y: scroll;')
+                  li
+                    a.dropdown-item(href='#', onclick='update_criterion("CrossEntropyLoss")') CrossEntropyLoss
               .mb-3
                 label.form-label(for='batch_size') Batch Size
                 input.form-control(type='number', id='training_batch_size', name='training_batch_size')
@@ -72,6 +84,29 @@ block content
 
 append scripts
   script.
+    var project_names = !{JSON.stringify(project_names)};
+    console.log(project_names)
+
+
+    function update_dataset(dataset_choice) {
+      dataset = document.getElementById('dataset')
+      dataset.value = dataset_choice
+      dataset_dropdown = document.getElementById('dropdown_menu_dataset')
+      dataset_dropdown.innerHTML = `Dataset: ${dataset_choice}`
+    }
+    function update_optimizer(optimizer_choice){
+      optimizer = document.getElementById('optimizer')
+      optimizer.value = optimizer_choice 
+      optimizer_dropdown = document.getElementById('dropdown_menu_optimizer')
+      optimizer_dropdown.innerHTML = `Optimizer: ${optimizer_choice}`
+    }
+    function update_criterion(criterion_choice){
+      criterion = document.getElementById('criterion')
+      criterion.value = criterion_choice
+      criterion_dropdown = document.getElementById('dropdown_menu_criterion')
+      criterion_dropdown.innerHTML = `Criterion: ${criterion_choice}`
+    }
+
     function validateForm() {
       // Validate general container inputs
       const project_name = document.getElementById('name').value;
@@ -112,6 +147,10 @@ append scripts
           alert('Please fill out all information fields')
           return false
         }
+      }
+      if (project_names.indexOf(project_name) !== -1){
+        alert("project name is already in use! Please pick another one.")
+        return false
       }
       return true;  // All fields are filled
     }
