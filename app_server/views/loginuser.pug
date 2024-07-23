@@ -32,7 +32,7 @@ append scripts
             alert('Please fill out all general information fields.');
             return false;
         }
-        if (users.indexOf(username) === -1){
+        if (users[0].indexOf(username) === -1){
             alert("not a valid username, please hit sign up and create an account")
             return false
         }

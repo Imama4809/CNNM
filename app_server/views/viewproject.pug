@@ -67,7 +67,7 @@ block content
       p The model is updated after each epoch. Hit the following button to download the latest version of the model you have trained! If an alert still pops up when you hit download, it may be that your model is still training!
       p In order to get the model, once you download the file, you need to use the base64 module to decode it and then serialize it using the pickle.loads() from the pickle module
 
-    
+
 
   
 
@@ -147,6 +147,8 @@ append scripts
 
       const order = element.getAttribute('data-order');
       const layer = JSON.parse(element.getAttribute('data-layer'));
+      const dropdown = document.getElementById(`dropdownMenuButton${order-1}`)
+      dropdown.innerHTML = layer.name
       selected_layer_data[order] = layer; // Store selected layer data based on order
       update(order, layer); // Update UI
     };
