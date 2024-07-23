@@ -21,6 +21,9 @@ block content
                 input.form-control(type='text', id='name', name='name')
               .mb-3
                 label.form-label(for='order') Layer Order 
+                p (will this be the first layer the data is passed through, the second?)
+                p Note* do not create layers in an order that do not have any layers in the previous order 
+                p i.e. don't create a layer with order 4 while there exists no layer with order 3
                 input.form-control(type='number', id='order', name='order')
             .specific-container(id='specific-container', style='length:400px;width:50%;display: inline-block;float:right')
               // Initial empty content for specific container

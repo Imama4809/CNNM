@@ -3,6 +3,7 @@ extends layout
 block content
   h2 #{project.name}
   h5 Press the arrow keys to move through the layers
+  h5 Upon the creation of a new project, you should see nothing here, click on the add layer button in order to add layers to the model you wish to create!
   .row(style = 'height:300px')
     form(method='POST', onsubmit = "return check_layers()")
       input(type='hidden', name='selected_layer_data', id='selected_layer_data')
@@ -55,7 +56,6 @@ block content
           p Weight Decay: #{project.training_training_data.weight_decay}
           p Optimizer: #{project.training_training_data.optimizer}
           p Criterion: #{project.training_training_data.criterion}
-      
   br
   br
   .row(style = "width:80%")
@@ -65,9 +65,9 @@ block content
 
     .card(style ='width:40%')
       p The model is updated after each epoch. Hit the following button to download the latest version of the model you have trained! If an alert still pops up when you hit download, it may be that your model is still training!
-      p In order to get the model, once you download the file, you need to use the base64 module to decode it and then searlize it using the pickle.loads() from the pickle module
+      p In order to get the model, once you download the file, you need to use the base64 module to decode it and then serialize it using the pickle.loads() from the pickle module
 
-  
+    
 
   
 
