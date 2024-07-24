@@ -2,6 +2,9 @@ extends layout
 
 block content
   h2 Add Layer
+  p Please ensure that your layers are compatible with one another 
+  p for example, if your first layer outputs a 784 features, ensure you design the next layer to recieve the appropriate number of features 
+  p Note that this is different  
   form(method='POST', onsubmit='return validateForm()')
     .row
       .col-md-12
@@ -56,11 +59,11 @@ append scripts
           case 'Convolutional Layer':
             container.innerHTML = `
               <div class="mb-3">
-                <label for="input_depth" class="form-label">Input Depth</label>
+                <label for="input_depth" class="form-label">Input Channels</label>
                 <input type="Number" class="form-control" id="input_depth" name="input_depth">
               </div>
               <div class="mb-3">
-                <label for="output_depth" class="form-label">Output Depth</label>
+                <label for="output_depth" class="form-label">Output Channels</label>
                 <input type="Number" class="form-control" id="onput_depth" name="output_depth">
               </div>
               <div class="mb-3">
