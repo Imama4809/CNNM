@@ -133,33 +133,61 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
         # loading the data 
         transform = transforms.Compose([transforms.ToTensor()])
         #if statments 
-        train_data = datasets.MNIST('./',download=False,transform=transform)
-        test_data = datasets.MNIST('./',train = False,transform=transform)
+        try:
+            if str(loading['dataset']) == 'MNIST':
+                train_data = datasets.MNIST('./',download=False,transform=transform)
+                test_data = datasets.MNIST('./',train = False,transform=transform)
+            elif str(loading['dataset']) =='CIFAR10':
+                train_CIFAR100_data = datasets.CIFAR10('./',download=False,transform=transform)
+                test_CIFAR100_data = datasets.CIFAR10('./',train = False,transform=transform)
+            else:
+                train_data = datasets.MNIST('./',download=False,transform=transform)
+                test_data = datasets.MNIST('./',train = False,transform=transform)
+                
 
-        train_data_loader = DataLoader(train_data,batch_size=int(loading['batch_size']),shuffle=int(loading['shuffle']))
-        test_data_loader = DataLoader(test_data,batch_size=int(loading['batch_size']))
-        #very basic data loading, add augment, random seed and valid size after 
-        
-        layers = json.loads(layers)
-        
-        # training the data 
+            train_data_loader = DataLoader(train_data,batch_size=int(loading['batch_size']),shuffle=int(loading['shuffle']))
+            test_data_loader = DataLoader(test_data,batch_size=int(loading['batch_size']))
+            #very basic data loading, add augment, random seed and valid size after 
+            
+            layers = json.loads(layers)
+            
+            # training the data 
 
-        model = createmodel(layers)
-        # need to change these to if statments 
-        criterion = nn.CrossEntropyLoss()
-        optimizer = optim.Adam(model.parameters(),lr=int(training['learning_rate']), weight_decay=int(training['weight_decay']))
-        
+            model = createmodel(layers)
+            # need to change these to if statments
+            if str(training['optimizer']) == 'Adam':
+                optimizer = optim.Adam(model.parameters(),lr=int(training['learning_rate']), weight_decay=int(training['weight_decay']))
+            elif str(training['optimizer']) =='SGD':
+                optimizer = optim.SGD(model.parameters(),lr=int(training['learning_rate']), weight_decay=int(training['weight_decay']))
+            elif str(training['optimizer']) =='Adadelta':
+                optimizer = optim.Adadelta(model.parameters(),lr=int(training['learning_rate']), weight_decay=int(training['weight_decay']))
+            else:
+                optimizer = optim.Adam(model.parameters(),lr=int(training['learning_rate']), weight_decay=int(training['weight_decay']))
+            if str(training['criterion']) == 'CrossEntropyLoss':
+                criterion = nn.CrossEntropyLoss()
+            elif str(training['criterion']) == 'MSE':
+                criterion = nn.MSELoss()
+            elif str(training['criterion']) == 'PoissonNLL':
+                criterion = nn.PoissonNLLLoss()
+            else:
+                criterion = nn.CrossEntropyLoss()
+            
 
-        for epoch in range(int(training['epoch'])):
-            print(f"epoch {epoch+1}")
-            train_one_epoch(criterion,optimizer,model,train_data_loader)
-            print("completed")
-            data = pickle.dumps(model.state_dict())
-            value = pickle.loads(data)
-            update_database(str(username),str(project_name),data)
-        
-        # update_database(username,project_name,value)
-        return func.HttpResponse(
-            "updated",
-            status_code=200
-        )
+            for epoch in range(int(training['epoch'])):
+                print(f"epoch {epoch+1}")
+                train_one_epoch(criterion,optimizer,model,train_data_loader)
+                print("completed")
+                data = pickle.dumps(model.state_dict())
+                value = pickle.loads(data)
+                update_database(str(username),str(project_name),data)
+            
+            # update_database(username,project_name,value)
+            return func.HttpResponse(
+                "updated",
+                status_code=200
+            )
+        except Exception as e:
+            return func.HttpResponse(
+                f"issue {e}",
+                status_code=200
+            )

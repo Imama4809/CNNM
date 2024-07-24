@@ -155,6 +155,7 @@ const run_python_code = async (req, res) => {
             const {default: got} = await import('got')
             var project = await got(url_to_handle_data, {headers: headers})
             project = JSON.parse(project.body)
+            console.log(project.loading_training_data)
             var form_data = {
                 username: username,
                 project_name: project.name,

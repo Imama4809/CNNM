@@ -12,7 +12,6 @@ block content
           .card-body
             .general-container
               h2 General Info
-              p2 Note: Only available datasets are MNIST 
               .mb-3
                 label.form-label(for='project_name') Project Name
                 input.form-control(type='text', id='name', name='name')
@@ -22,6 +21,8 @@ block content
                 ul.dropdown-menu(aria-labelledby=`dropdown_menu_dataset`, style='max-height: 100%; overflow-y: scroll;')
                   li
                     a.dropdown-item(href='#', onclick='update_dataset("MNIST")') MNIST
+                  li 
+                    a.dropdown-item(href='#', onclick='update_dataset("CIFAR-10")') CIFAR-10
               .mb-3
       .col-md-4
         .card
@@ -48,9 +49,6 @@ block content
           .card-body           
             .training-container(id = 'training-info')
               h2 Training Info
-              p2 Note: Only available Optimizers are: Adam 
-              br
-              p2 Note: Only available Criterions are: CrossEntropyLoss
               .mb-3
                 label.form-label(for='epoch') Epoch
                 input.form-control(type='Number', id='epoch', name='epoch')
@@ -60,12 +58,23 @@ block content
                 ul.dropdown-menu(aria-labelledby=`dropdown_menu_optimizer`, style='max-height: 100%; overflow-y: scroll;')
                   li
                     a.dropdown-item(href='#', onclick='update_optimizer("Adam")') Adam
+                  li
+                    a.dropdown-item(href='#', onclick='update_optimizer("SGD")') SGD
+                  li 
+                    a.dropdown-item(href='#', onclick='update_optimizer("Adadelta")') Adadelta
+
+
               .mb-3
                 button.btn2.btn-secondary.dropdown-toggle(type='button', id=`dropdown_menu_criterion`, data-bs-toggle='dropdown', aria-expanded='false')
                   | Choose Criterion 
                 ul.dropdown-menu(aria-labelledby=`dropdown_menu_criterion`, style='max-height: 100%; overflow-y: scroll;')
                   li
                     a.dropdown-item(href='#', onclick='update_criterion("CrossEntropyLoss")') CrossEntropyLoss
+                  li
+                    a.dropdown-item(href='#', onclick='update_criterion("MSE")') MSE
+                  li 
+                    a.dropdown-item(href='#', onclick='update_criterion("PoissonNLL")') PoissonNLL
+
               .mb-3
                 label.form-label(for='batch_size') Batch Size
                 input.form-control(type='number', id='training_batch_size', name='training_batch_size')
@@ -119,19 +128,16 @@ append scripts
         alert('Please fill out all general information fields.');
         return false;
       }
-      if (['MNIST'].indexOf(dataset) === -1){
-        alert('Not a valid dataset')
-        return false
-      }
+
       
       const optimizer = document.getElementById('optimizer').value
-      if (['Adam'].indexOf(optimizer) === -1){
-        alert('Not a valid optimizer')
+      if (!optimizer){
+        alert('Please fill out all information fields')
         return false
       }
       const criterion = document.getElementById('criterion').value
-      if (['CrossEntropyLoss'].indexOf(criterion) === -1){
-        alert('Not a valid criterion')
+      if (!criterion){
+        alert('Please fill out all information fields')
         return false
       }
       const loading_info = document.querySelectorAll('#loading-info input')
